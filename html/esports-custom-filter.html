@@ -97,8 +97,8 @@
               },
               body: JSON.stringify(data),
             })
-              .then(responce => {
-                const parsedResponce = responce.json();
+              .then(responce => responce.json())
+              .then(parsedResponce => {
                 console.log('parsedResponce', parsedResponce);
                 setGame2DataId(parsedResponce.id);
               })
