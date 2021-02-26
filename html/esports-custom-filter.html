@@ -165,7 +165,7 @@
               key: 'gender',
               name: 'gender',
               value: value,
-              onChange: onReactSelectChange(props.onChange),
+              onChange: onReactSelectChange,
               isMulti: true,
               options:  gamesData.items.map(element =>
                 element.id && {value: element.id, label: element.data.slug.iv}),
