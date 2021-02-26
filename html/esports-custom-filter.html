@@ -40,12 +40,13 @@
       const field = new SquidexFormField();
 
       function Editor() {
+        const squidexFormValue = field.getFormValue();
+        const initialValue = squidexFormValue?.squidexFormValue?.iv;
         const [isDisabled, setIsDisabled] = React.useState(false);
-        const [value, setValue] = React.useState(undefined);
+        const [value, setValue] = React.useState(initialValue || undefined);
         const [context, setContext] = React.useState(null);
         const [gamesData, setGamesData] = React.useState(null);
         const [game2DataId, setGame2DataId] = React.useState(null);
-        const squidexFormValue = field.getFormValue();
         console.log('squidexFormValue', squidexFormValue);
         console.log('gamesData', gamesData);
         console.log('game2DataId', game2DataId);
@@ -61,7 +62,7 @@
 
         // api interaction
         React.useEffect(() => {
-          context &&
+          if (context) {
             fetch(`${context.apiUrl}/content/esports-v1/esports-games-v1/`, {
               headers: {
                 Authorization: `Bearer ${context.user.user.access_token}`,
@@ -74,6 +75,7 @@
                 setGamesData(parsedData);
               })
               .catch(error => console.log(error));
+          }  
         }, [value, context]);
         const createNewRecord = React.useCallback(
           (gameId, serieId) => {
@@ -167,28 +169,6 @@
         return React.createElement('form', {
           onSubmit: onSubmit,
           children: [
-            React.createElement(Controller, {
-              name: 'gender2',
-              key: 'gender2',
-              control: control,
-              render: props => {
-                return React.createElement('select', {
-                  key: 'gender',
-                  name: 'gender',
-                  ref: register,
-                  value: props.value,
-                  onChange: onChange(props.onChange),
-                  children: gamesData.items.map(
-                    element =>
-                      element.id &&
-                      React.createElement('option', {
-                        key: element.id,
-                        children: [`${element.data.slug.iv}   ${element.id}`],
-                      })
-                  ),
-                });
-              },
-            }),
             React.createElement(Controller, {
               name: 'gender1',
               key: 'gender1',
