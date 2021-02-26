@@ -181,16 +181,14 @@
               key: 'gender1',
               control: control,
               render: props => {
-                return React.createElement('select', {
+                return React.createElement(Select, {
                   key: 'gender',
                   name: 'gender',
-                  ref: register,
                   value: props.value,
                   onChange: onChange(props.onChange),
                   isMulti: true,
                   options:  gamesData.items.map(element =>
                     element.id && {value: element.id, label: element.data.slug.iv}),
-                  as: Select,
                 });
               },
             }),
