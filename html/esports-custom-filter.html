@@ -58,7 +58,9 @@
               },
             })
               .then(response => {
-                const parsedData = response.json();
+                return response.json();
+              })
+              .then(response => {
                 setGamesData(parsedData);
               })
               .catch(error => console.log(error));
