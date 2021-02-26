@@ -150,6 +150,14 @@
           },
           []
         );
+        const onReactSelectChange = React.useCallback(
+          onChangeFunc => selectedOption => {
+            console.log('selectedOption', selectedOption);
+            setValue(selectedOption);
+            onChangeFunc(selectedOption);
+          },
+          []
+        );
 
         if (!gamesData) {
           return 'loading...';
