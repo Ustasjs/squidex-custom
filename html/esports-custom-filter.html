@@ -144,16 +144,8 @@
           });
         }, []);
 
-        const onChange = React.useCallback(
-          onChangeFunc => e => {
-            console.log('e', e);
-            setValue(e.target.value);
-            onChangeFunc(e.target.value);
-          },
-          []
-        );
         const onReactSelectChange = React.useCallback(
-          onChangeFunc => selectedOption => {
+          selectedOption => {
             console.log('selectedOption', selectedOption);
             setValue(selectedOption);
             onChangeFunc(selectedOption);
@@ -172,7 +164,7 @@
             React.createElement(Select, {
               key: 'gender',
               name: 'gender',
-              value: props.value,
+              value: value,
               onChange: onReactSelectChange(props.onChange),
               isMulti: true,
               options:  gamesData.items.map(element =>
