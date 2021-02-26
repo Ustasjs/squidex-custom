@@ -90,6 +90,7 @@
             };
             fetch(`${context.apiUrl}/content/esports-v1/games2series/`, {
               method: 'POST',
+              mode: "cors",
               headers: {
                 'Content-Type': 'application/json',
               },
