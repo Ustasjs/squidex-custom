@@ -9,6 +9,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/react-hook-form@6.15.4/dist/index.umd.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-select/4.1.0/react-select.cjs.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cloud.squidex.io/build/app.css" />
 
@@ -47,6 +48,7 @@
 
         const { register, handleSubmit, errors, control } = ReactHookForm.useForm();
         const Controller = ReactHookForm.Controller;
+        const Select = ReactSelect;
         const onSubmit = data => console.log(data);
 
         // api interaction
@@ -164,9 +166,26 @@
                       element.id &&
                       React.createElement('option', {
                         key: element.id,
-                        children: [`${element.data.slug.iv}-${element.id}`],
+                        children: [`${element.data.slug.iv}   ${element.id}`],
                       })
                   ),
+                });
+              },
+            }),
+            React.createElement(Controller, {
+              name: 'gender1',
+              key: 'gender1',
+              control: control,
+              render: props => {
+                return React.createElement('select', {
+                  key: 'gender',
+                  name: 'gender',
+                  ref: register,
+                  value: props.value,
+                  onChange: onChange(props.onChange),
+                  options:  gamesData.items.map(element =>
+                    element.id && {value: element.id, label: element.data.slug.iv}),
+                  as={Select}
                 });
               },
             }),
