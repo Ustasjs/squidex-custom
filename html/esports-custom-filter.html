@@ -60,7 +60,7 @@
               .then(response => {
                 return response.json();
               })
-              .then(response => {
+              .then(parsedData => {
                 setGamesData(parsedData);
               })
               .catch(error => console.log(error));
