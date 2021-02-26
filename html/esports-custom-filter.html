@@ -90,8 +90,6 @@
             };
             fetch(`${context.apiUrl}/content/esports-v1/games2series/`, {
               method: 'POST',
-              mode: 'same-origin',
-              credentials: 'same-origin',
               headers: {
                 'Content-Type': 'application/json',
               },
@@ -113,8 +111,6 @@
           game2DataId => {
             fetch(`${context.apiUrl}/content/esports-v1/games2series/${game2DataId}`, {
               method: 'DELETE',
-              mode: 'same-origin',
-              credentials: 'same-origin',
               headers: {
                 Authorization: `Bearer ${context.user.user.access_token}`,
               },
