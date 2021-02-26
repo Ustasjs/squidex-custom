@@ -9,7 +9,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/react-hook-form@6.15.4/dist/index.umd.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-select/4.1.0/react-select.cjs.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-select@4.1.0/dist/react-select.cjs.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cloud.squidex.io/build/app.css" />
 
@@ -183,6 +183,7 @@
                   ref: register,
                   value: props.value,
                   onChange: onChange(props.onChange),
+                  isMulti: true,
                   options:  gamesData.items.map(element =>
                     element.id && {value: element.id, label: element.data.slug.iv}),
                   as={Select}
