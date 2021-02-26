@@ -151,11 +151,11 @@
             setValue(selectedOption);
             field.valueChanged(selectedOption);
             if (value < selectedOption.length) {
-              const addedElement = lodash.difference(selectedOption, value)[0]
+              const addedElement = _.difference(selectedOption, value)[0]
               createNewRecord(addedElement.value, context.initialContent.id);
             }
             else {
-              const removedElement = difference(value, selectedOption)[0]
+              const removedElement = _.difference(value, selectedOption)[0]
               deleteRecord(game2DataId);
             }
           },
