@@ -90,14 +90,12 @@
             };
             fetch(`${context.apiUrl}/content/esports-v1/games2series/`, {
               method: 'POST',
-              mode: "cors",
+              mode: 'cors',
               headers: {
                 'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(data),
-              headers: {
                 Authorization: `Bearer ${context.user.user.access_token}`,
               },
+              body: JSON.stringify(data),
             })
               .then(responce => {
                 const parsedResponce = responce.json();
