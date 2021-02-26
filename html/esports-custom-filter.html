@@ -15,6 +15,7 @@
     <script src="https://unpkg.com/react-input-autosize@2.2.2/dist/react-input-autosize.js"></script>
     <script src="https://unpkg.com/emotion@10.0.27/dist/emotion.umd.min.js"></script>
     <script src="https://unpkg.com/react-select@2.4.4/dist/react-select.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cloud.squidex.io/build/app.css" />
 
@@ -108,9 +109,9 @@
           },
           [setGame2DataId, context]
         );
-        const deleteNewRecord = React.useCallback(
+        const deleteRecord = React.useCallback(
           game2DataId => {
-            fetch(`${context.apiUrl}/content/esports-v1/games2series/${id}`, {
+            fetch(`${context.apiUrl}/content/esports-v1/games2series/${game2DataId}`, {
               method: 'DELETE',
               mode: 'same-origin',
               credentials: 'same-origin',
@@ -148,10 +149,17 @@
           selectedOption => {
             console.log('selectedOption', selectedOption);
             setValue(selectedOption);
-            onChangeFunc(selectedOption);
             field.valueChanged(selectedOption);
+            if (value < selectedOption.length) {
+              const addedElement = lodash.difference(selectedOption, value)[0]
+              createNewRecord(addedElement.value, context.initialContent.id);
+            }
+            else {
+              const removedElement = difference(value, selectedOption)[0]
+              deleteRecord(game2DataId);
+            }
           },
-          []
+          [createNewRecord, value, setValue, context, deleteRecord, game2DataId]
         );
 
         if (!gamesData) {
