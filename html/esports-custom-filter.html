@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <script src="https://cloud.squidex.io/scripts/editor-sdk.js"></script>
+    <!-- change reat to production version -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/react-hook-form@6.15.4/dist/index.umd.production.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cloud.squidex.io/build/app.css" />
+
+    <style>
+      body {
+        background: none;
+      }
+
+      #root__title {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="editor"></div>
+
+    <script>
+      const field = new SquidexFormField();
+
+      function Editor() {
+        const [isDisabled, setIsDisabled] = React.useState(false);
+        const [value, setValue] = React.useState(undefined);
+        const [context, setContext] = React.useState(null);
+        const [gamesData, setGamesData] = React.useState(null);
+        const [game2DataId, setGame2DataId] = React.useState(null);
+        const squidexFormValue = field.getFormValue();
+        console.log('squidexFormValue', squidexFormValue);
+        console.log('gamesData', gamesData);
+        console.log('game2DataId', game2DataId);
+
+        field.onInit(intializedContext => {
+          console.log('intializedContext', intializedContext);
+          setContext(intializedContext);
+        });
+
+        const { register, handleSubmit, errors, control } = ReactHookForm.useForm();
+        const Controller = ReactHookForm.Controller;
+        const onSubmit = data => console.log(data);
+
+        // api interaction
+        React.useEffect(() => {
+          context &&
+            fetch(`${context.apiUrl}/content/esports-v1/esports-games-v1/`, {
+              headers: {
+                Authorization: `Bearer ${context.user.user.access_token}`,
+              },
+            })
+              .then(response => {
+                const parsedData = response.json();
+                setGamesData(parsedData);
+              })
+              .catch(error => console.log(error));
+        }, [value, context]);
+        const createNewRecord = React.useCallback(
+          (gameId, serieId) => {
+            const data = {
+              gameID: {
+                iv: gameId,
+              },
+              serieID: {
+                iv: serieId,
+              },
+            };
+            fetch(`${context.apiUrl}/content/esports-v1/games2series/`, {
+              method: 'POST',
+              mode: 'same-origin',
+              credentials: 'same-origin',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              redirect: 'follow',
+              body: JSON.stringify(data),
+              headers: {
+                Authorization: `Bearer ${context.user.user.access_token}`,
+              },
+            })
+              .then(responce => {
+                const parsedResponce = responce.json();
+                setGame2DataId(parsedResponce.id);
+              })
+              .catch(error => console.log('creating Game2Data', error));
+          },
+          [setGame2DataId, context]
+        );
+        const deleteNewRecord = React.useCallback(
+          game2DataId => {
+            fetch(`${context.apiUrl}/content/esports-v1/games2series/${id}`, {
+              method: 'DELETE',
+              mode: 'same-origin',
+              credentials: 'same-origin',
+              headers: {
+                Authorization: `Bearer ${context.user.user.access_token}`,
+              },
+            })
+              .then(responce => {
+                console.log('deleting responce', responce);
+              })
+              .catch(error => console.log('deleting Game2Data', error));
+          },
+          [context]
+        );
+
+        React.useEffect(() => {
+          console.log('value', value);
+          if (!errors.gender) {
+            console.log('changed');
+            field.valueChanged(value);
+          }
+        }, [value]);
+
+        React.useEffect(function () {
+          field.onDisabled(function (disabled) {
+            setIsDisabled(disabled);
+          });
+
+          field.onValueChanged(function (value) {
+            setValue(value);
+          });
+        }, []);
+
+        const onChange = React.useCallback(
+          onChangeFunc => e => {
+            console.log('e', e);
+            setValue(e.target.value);
+            onChangeFunc(e.target.value);
+          },
+          []
+        );
+
+        if (!gamesData) {
+          return 'loading...';
+        }
+
+        return React.createElement('form', {
+          onSubmit: onSubmit,
+          children: [
+            React.createElement(Controller, {
+              name: 'gender2',
+              key: 'gender2',
+              control: control,
+              render: props => {
+                return React.createElement('select', {
+                  key: 'gender',
+                  name: 'gender',
+                  ref: register,
+                  value: props.value,
+                  onChange: onChange(props.onChange),
+                  children: gamesData.map(
+                    element =>
+                      element.id &&
+                      React.createElement('option', {
+                        key: element.id,
+                        children: [`${element.id}-${element.data.slig.iv}`],
+                      })
+                  ),
+                });
+              },
+            }),
+          ],
+        });
+      }
+
+      ReactDOM.render(React.createElement(Editor), document.getElementById('editor'));
+    </script>
+  </body>
+</html>
