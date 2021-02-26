@@ -99,6 +99,7 @@
             })
               .then(responce => {
                 const parsedResponce = responce.json();
+                console.log('parsedResponce', parsedResponce);
                 setGame2DataId(parsedResponce.id);
               })
               .catch(error => console.log('creating Game2Data', error));
@@ -150,6 +151,7 @@
             }
             else {
               const removedElement = _.difference(value, selectedOption)[0]
+              // нужно искать айдишник по айдишнику игры и айдишнику серии
               deleteRecord(game2DataId);
             }
           },
