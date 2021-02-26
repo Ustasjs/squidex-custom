@@ -159,7 +159,7 @@
                   ref: register,
                   value: props.value,
                   onChange: onChange(props.onChange),
-                  children: gamesData.map(
+                  children: gamesData.items.map(
                     element =>
                       element.id &&
                       React.createElement('option', {
