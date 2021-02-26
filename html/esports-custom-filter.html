@@ -169,21 +169,14 @@
         return React.createElement('form', {
           onSubmit: onSubmit,
           children: [
-            React.createElement(Controller, {
-              name: 'gender1',
-              key: 'gender1',
-              control: control,
-              render: props => {
-                return React.createElement(Select, {
-                  key: 'gender',
-                  name: 'gender',
-                  value: props.value,
-                  onChange: onReactSelectChange(props.onChange),
-                  isMulti: true,
-                  options:  gamesData.items.map(element =>
-                    element.id && {value: element.id, label: element.data.slug.iv}),
-                });
-              },
+            React.createElement(Select, {
+              key: 'gender',
+              name: 'gender',
+              value: props.value,
+              onChange: onReactSelectChange(props.onChange),
+              isMulti: true,
+              options:  gamesData.items.map(element =>
+                element.id && {value: element.id, label: element.data.slug.iv}),
             }),
           ],
         });
