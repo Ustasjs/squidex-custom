@@ -12,6 +12,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/antd@4.13.1/lib/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-hook-form@6.15.4/dist/index.umd.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cloud.squidex.io/build/app.css" />
 
@@ -38,7 +39,7 @@
 
       function Editor() {
         const squidexFormValue = field.getFormValue();
-        const initialValue = squidexFormValue?.squidexFormValue?.iv;
+        const initialValue = _.get(squidexFormValue, 'squidexFormValue.iv');
         const [isDisabled, setIsDisabled] = React.useState(false);
         const [value, setValue] = React.useState(initialValue || undefined);
         const [context, setContext] = React.useState(null);
