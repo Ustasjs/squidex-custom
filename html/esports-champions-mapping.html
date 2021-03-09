@@ -112,13 +112,13 @@
                     Authorization: `Bearer ${context.user.user.access_token}`,
                   },
                 })
-                  .then(response => {
-                    return response.json();
-                  })
-                  .then(parsedData => {
-                    setIsMatchDataLoading(false);
-                    setChampionsData(parsedData);
-                  })
+              })
+              .then(response => {
+                return response.json();
+              })
+              .then(parsedData => {
+                setIsMatchDataLoading(false);
+                setChampionsData(parsedData);
               })
               .catch(error => {
                 setMatchDataError(error);
@@ -148,6 +148,8 @@
             </div>
           )}
         }
+
+        return 'Oups';
 
       ReactDOM.render(React.createElement(Editor), document.getElementById('editor'));
     </script>
