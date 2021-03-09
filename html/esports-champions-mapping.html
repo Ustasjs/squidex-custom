@@ -96,6 +96,7 @@
                 return response.json();
               })
               .then(parsedData => {
+                console.log('parsedData', parsedData)
                 setMatchData(parsedData);
                 const participants = _.get(parsedData, 'Data.participants');
                 return participants.map(participant => participant.championId);
