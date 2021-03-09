@@ -86,7 +86,6 @@
             setIsMatchDataLoading(true);
             fetch(`https://dev-lol-backend-esports-dev-esports-http.us.moba.live/v1/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
               headers: {
-                Authorization: `Bearer ${context.user.user.access_token}`,
                 'Referrer-Policy': 'no-referrer-when-downgrade'
               },
             })
