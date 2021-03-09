@@ -43,6 +43,7 @@
         const [value, setValue] = React.useState(initialValue || undefined);
         const [context, setContext] = React.useState(null);
         console.log('squidexFormValue', squidexFormValue);
+        console.log('errors', errors);
 
         field.onInit(intializedContext => {
           console.log('intializedContext', intializedContext);
@@ -51,7 +52,6 @@
 
         const { register, handleSubmit, errors, control } = ReactHookForm.useForm();
         const onSubmit = data => {
-          console.log('errors', errors);
           console.log(data);
         }
 
