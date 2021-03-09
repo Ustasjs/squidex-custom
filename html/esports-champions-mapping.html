@@ -118,7 +118,7 @@
                 setChampionsData(parsedData);
               })
               .catch(error => {
-                setMatchDataError(error);
+                setMatchDataError(error.message);
                 console.error(error);
               });
           }  
