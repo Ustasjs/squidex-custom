@@ -42,13 +42,11 @@
 
       function Editor() {
         const squidexFormValue = field.getFormValue();
-        const initialValue = _.get(squidexFormValue, 'squidexFormValue.matchDataMaping.iv');
+        const initialValue = _.get(squidexFormValue, 'matchDataMaping.iv');
         const [isDisabled, setIsDisabled] = React.useState(false);
         const [value, setValue] = React.useState(initialValue || undefined);
         const [context, setContext] = React.useState(null);
         console.log('squidexFormValue', squidexFormValue);
-        console.log('errors', errors);
-        console.log('context', context);
         const [championsData, setChampionsData] = React.useState(null);
         const [matchData, setMatchData] = React.useState(null);
         const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
@@ -56,10 +54,15 @@
         console.log('championsData', championsData);
         console.log('matchData', matchData);
 
-        const gameHash = _.get(squidexFormValue, 'squidexFormValue.gameHash.iv');
-        const gameId = _.get(squidexFormValue, 'squidexFormValue.gameId.iv');
-        const region = _.get(squidexFormValue, 'squidexFormValue.region.iv');
-        const authorizationCookie = _.get(squidexFormValue, 'squidexFormValue.authorizationCookie.iv');
+        const gameHash = _.get(squidexFormValue, 'gameHash.iv');
+        const gameId = _.get(squidexFormValue, 'gameId.iv');
+        const region = _.get(squidexFormValue, 'region.iv');
+        const authorizationCookie = _.get(squidexFormValue, 'authorizationCookie.iv');
+
+        console.log('gameHash', gameHash);
+        console.log('gameId', gameId);
+        console.log('region', region);
+        console.log('authorizationCookie', authorizationCookie);
 
         field.onInit(intializedContext => {
           console.log('intializedContext', intializedContext);
