@@ -84,9 +84,10 @@
         const getMatchData = React.useCallback(() => {
           if (gameId && region && authorizationCookie && context) {
             setIsMatchDataLoading(true);
-            fetch(`https://dev-lol-backend-esports-dev-esports-http.us.moba.live/v1/matches/${region}/${gameId}`, {
+            fetch(`https://dev-lol-backend-esports-dev-esports-http.us.moba.live/v1/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
               headers: {
                 Authorization: `Bearer ${context.user.user.access_token}`,
+                'Referrer-Policy': 'no-referrer-when-downgrade'
               },
             })
               .then(response => {
@@ -122,7 +123,7 @@
                 console.error(error);
               });
           }  
-        }, [gameId, region, authorizationCookie, context]);
+        }, [gameId, gameHash, region, authorizationCookie, context]);
 
         if (!gameId || !region || !authorizationCookie) {
           return (
