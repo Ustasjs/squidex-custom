@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <script src="https://cloud.squidex.io/scripts/editor-sdk.js"></script>
+    <!-- change reat to production version -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <!-- support for JSX in the type="text/babel" sript -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/antd@4.13.1/lib/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-hook-form@6.15.4/dist/index.umd.production.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cloud.squidex.io/build/app.css" />
+
+    <style>
+      body {
+        background: none;
+      }
+
+      #root__title {
+        display: none;
+      }
+
+      #editor {
+        min-height: 350px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="editor"></div>
+
+    <script type="text/babel">
+      const field = new SquidexFormField();
+
+      function Editor() {
+        const squidexFormValue = field.getFormValue();
+        const initialValue = squidexFormValue?.squidexFormValue?.iv;
+        const [isDisabled, setIsDisabled] = React.useState(false);
+        const [value, setValue] = React.useState(initialValue || undefined);
+        const [context, setContext] = React.useState(null);
+        console.log('squidexFormValue', squidexFormValue);
+        console.log('game2DataId', game2DataId);
+
+        field.onInit(intializedContext => {
+          console.log('intializedContext', intializedContext);
+          setContext(intializedContext);
+        });
+
+        const { register, handleSubmit, errors, control } = ReactHookForm.useForm();
+        const onSubmit = data => console.log(data);
+
+        React.useEffect(function () {
+          field.onDisabled(function (disabled) {
+            setIsDisabled(disabled);
+          });
+
+          field.onValueChanged(function (value) {
+            setValue(value);
+          });
+        }, []);
+
+        return (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <select name="region" ref={register({ required: true })}>
+              <option value="NA1">NA1</option>
+            </select>
+            <input name="gameHash" ref={register({ required: true })} />
+            <input name="gameId" ref={register} />
+            <input type="submit" />
+          </form>
+        );}
+
+      ReactDOM.render(React.createElement(Editor), document.getElementById('editor'));
+    </script>
+  </body>
+</html>
