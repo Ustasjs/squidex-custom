@@ -10,7 +10,6 @@
     <!-- support for JSX in the type="text/babel" sript -->
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/antd@4.13.1/lib/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-hook-form@6.15.4/dist/index.umd.production.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
@@ -51,7 +50,10 @@
         });
 
         const { register, handleSubmit, errors, control } = ReactHookForm.useForm();
-        const onSubmit = data => console.log(data);
+        const onSubmit = data => {
+          console.log('errors', errors);
+          console.log(data);
+        }
 
         React.useEffect(function () {
           field.onDisabled(function (disabled) {
