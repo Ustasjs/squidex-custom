@@ -27,6 +27,10 @@
       #editor {
         min-height: 350px;
       }
+
+      .error {
+        color: red;
+      }
     </style>
   </head>
 
@@ -38,13 +42,24 @@
 
       function Editor() {
         const squidexFormValue = field.getFormValue();
-        const initialValue = _.get(squidexFormValue, 'squidexFormValue.iv');
+        const initialValue = _.get(squidexFormValue, 'squidexFormValue.matchDataMaping.iv');
         const [isDisabled, setIsDisabled] = React.useState(false);
         const [value, setValue] = React.useState(initialValue || undefined);
         const [context, setContext] = React.useState(null);
         console.log('squidexFormValue', squidexFormValue);
         console.log('errors', errors);
         console.log('context', context);
+        const [championsData, setChampionsData] = React.useState(null);
+        const [matchData, setMatchData] = React.useState(null);
+        const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
+        const [matchDataError, setMatchDataError] = React.useState(null);
+        console.log('championsData', championsData);
+        console.log('matchData', matchData);
+
+        const gameHash = _.get(squidexFormValue, 'squidexFormValue.gameHash.iv');
+        const gameId = _.get(squidexFormValue, 'squidexFormValue.gameId.iv');
+        const region = _.get(squidexFormValue, 'squidexFormValue.region.iv');
+        const authorizationCookie = _.get(squidexFormValue, 'squidexFormValue.authorizationCookie.iv');
 
         field.onInit(intializedContext => {
           console.log('intializedContext', intializedContext);
@@ -66,16 +81,69 @@
           });
         }, []);
 
-        return (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <select name="region" ref={register({ required: true })}>
-              <option value="NA1">NA1</option>
-            </select>
-            <input name="gameHash" ref={register({ required: true })} />
-            <input name="gameId" ref={register} />
-            <input type="submit" />
-          </form>
-        );}
+        const getMatchData = React.useCallback(() => {
+          if (gameId && region && authorizationCookie && context) {
+            setIsMatchDataLoading(true);
+            fetch(`dev-lol-backend-esports-dev-esports-http.us.moba.live/v1/matches/${region}/${gameId}`, {
+              headers: {
+                Authorization: `Bearer ${context.user.user.access_token}`,
+              },
+            })
+              .then(response => {
+                return response.json();
+              })
+              .then(parsedData => {
+                setMatchData(parsedData);
+                const participants = _.get(parsedData, 'Data.participants');
+                return participants.map(participant => participant.championId);
+              })
+              .then(participants => {
+                const filterValue = participants.reduce((acc, element) => {
+                  acc = `${acc}, ${element}`;
+                  return acc;
+                }, '')
+                const filter = `$filter=items/data/riotId/iv in (${filterValue})`;
+                return fetch(`${context.apiUrl}/content/esports-v1/esports-games-v1/?${filter}`, {
+                  headers: {
+                    Authorization: `Bearer ${context.user.user.access_token}`,
+                  },
+                })
+                  .then(response => {
+                    return response.json();
+                  })
+                  .then(parsedData => {
+                    setIsMatchDataLoading(false);
+                    setChampionsData(parsedData);
+                  })
+              })
+              .catch(error => {
+                setMatchDataError(error);
+                console.error(error);
+              });
+          }  
+        }, [gameId, region, authorizationCookie, context]);
+
+        if (!gameId || !region || !authorizationCookie) {
+          return (
+            <div>Please fill out all required fields</div>
+          );
+        }
+
+        if (matchDataError) {
+          <div className="error">
+            <div>Oops, something went wrong!</div>
+            <div>{matchDataError}</div>
+          </div>
+        }
+
+        if (!matchData && !matchDataError) {
+          return (
+            <div>
+              <button onClick={getMatchData} isDisabled={isMatchDataLoading} type="button">Load match data</button>
+              {isMatchDataLoading && 'loading...'}
+            </div>
+          )}
+        }
 
       ReactDOM.render(React.createElement(Editor), document.getElementById('editor'));
     </script>
