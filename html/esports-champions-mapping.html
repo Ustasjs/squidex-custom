@@ -87,7 +87,7 @@
         const getMatchData = React.useCallback(() => {
           if (gameId && region && authorizationCookie && context) {
             setIsMatchDataLoading(true);
-            fetch(`dev-lol-backend-esports-dev-esports-http.us.moba.live/v1/matches/${region}/${gameId}`, {
+            fetch(`https://dev-lol-backend-esports-dev-esports-http.us.moba.live/v1/matches/${region}/${gameId}`, {
               headers: {
                 Authorization: `Bearer ${context.user.user.access_token}`,
               },
