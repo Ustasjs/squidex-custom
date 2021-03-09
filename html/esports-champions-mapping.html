@@ -59,7 +59,7 @@
         const region = _.get(squidexFormValue, 'region.iv');
         const authorizationCookie = _.get(squidexFormValue, 'authorizationCookie.iv');
 
-        console.log('matchDataError', matchDataError);
+        console.log('matchDataError',  JSON.parse(JSON.stringify(matchDataError)));
 
         field.onInit(intializedContext => {
           console.log('intializedContext', intializedContext);
