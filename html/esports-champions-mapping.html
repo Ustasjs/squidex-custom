@@ -131,10 +131,10 @@
         }
 
         if (matchDataError) {
-          <div className="error">
+          return ( <div className="error">
             <div>Oops, something went wrong!</div>
             <div>{matchDataError}</div>
-          </div>
+          </div>)
         }
 
         if (!matchData && !matchDataError) {
