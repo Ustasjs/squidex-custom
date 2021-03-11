@@ -97,7 +97,7 @@
                   acc = `${acc}, ${element}`;
                   return acc;
                 }, '')
-                const filter = `$filter=items/data/riotId/iv in (${filterValue})`;
+                const filter = `$filter=data/riotId/iv in (${filterValue})`;
                 return fetch(`${context.apiUrl}/content/league-v1/champions-v1/?${filter}`, {
                   headers: {
                     Authorization: `Bearer ${context.user.user.access_token}`,
