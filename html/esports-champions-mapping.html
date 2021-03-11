@@ -105,7 +105,7 @@
         const gameHash = _.get(squidexFormValue, 'gameHash.iv');
         const gameId = _.get(squidexFormValue, 'gameId.iv');
         const region = _.get(squidexFormValue, 'region.iv');
-        const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv');
+        const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
 
         field.onInit(intializedContext => {
           setContext(intializedContext);
@@ -113,7 +113,6 @@
 
         const { initialFormValues, initialChampionSlugs} = React.useMemo(() => {
           if (champion2PlayerMap) {
-            console.log('champion2PlayerMap', champion2PlayerMap);
             const initialFormValues = champion2PlayerMap.reduce((acc, element) => {
               acc[element.championSlug] = element.playerSlug;
               return acc;
