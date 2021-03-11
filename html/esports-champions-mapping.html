@@ -111,12 +111,13 @@
           setContext(intializedContext);
         });
 
-        const initialFormValues = React.useMemo(() => {
+        const { initialFormValues, initialChampionSlugs} = React.useMemo(() => {
           if (champion2PlayerMap) {
-            return champion2PlayerMap.reduce((acc, element) => {
+            const initialFormValues = champion2PlayerMap.reduce((acc, element) => {
               acc[element.championSlug] = element.playerSlug;
               return acc;
             }, {});
+            const initialChampionSlugs = Object.keys(initialFormValues);
           }
           return null;
         }, [champion2PlayerMap])
@@ -205,10 +206,10 @@
 
           console.log('formattedChampionsData', formattedChampionsData);
           console.log('playersData', playersData);
-
-          return (formattedChampionsData || initialFormValues) && (
+          const renderData = formattedChampionsData || initialChampionSlugs;
+          return (renderData) && (
             <form onSubmit={handleSubmit(onSubmit)}>
-              {formattedChampionsData.map(champion => (
+              {renderData.map(champion => (
                 <div key={champion}>
                   <div className="form-element">
                     <span style={{ marginRight: '10px' }}>{champion}</span>
