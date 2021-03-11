@@ -111,14 +111,12 @@
           setContext(intializedContext);
         });
 
-        const { initialFormValues, initialChampionSlugs} = React.useMemo(() => {
+        const initialFormValues = React.useMemo(() => {
           if (champion2PlayerMap) {
-            const initialFormValues = champion2PlayerMap.reduce((acc, element) => {
+            return champion2PlayerMap.reduce((acc, element) => {
               acc[element.championSlug] = element.playerSlug;
               return acc;
             }, {});
-            const initialChampionSlugs = Object.keys(initialFormValues);
-            return { initialFormValues, initialChampionSlugs };
           }
           return {};
         }, [champion2PlayerMap])
@@ -176,9 +174,10 @@
         const getMatchDataCallback = React.useCallback(() => {
           if (gameId && region && context) {
             setIsMatchDataLoading(true);
-            Promise.all(getMatchData(region, gameId, gameHash))
-              .then((parsedMatchData) => {
+            Promise.all([getMatchData(region, gameId, gameHash), getPlayers(context)])
+              .then(([parsedMatchData, parsedPlayersData]) => {
                 setMatchData(parsedMatchData);
+                setPlayersData(parsedPlayersData);
                 const participants = _.get(parsedMatchData, 'Data.participants');
                 return participants.map(participant => participant.championId);
               })
@@ -208,15 +207,24 @@
             <div>{matchDataError}</div>
           </div>)
         }
-        
-        if (!playersData) {
-          return <div>loading players data...</div>
+
+        if (initialFormValues) {
+          <div>
+            <div className="form-element">
+              {Object.entries(initialFormValues).map(([champion, player]) => (
+                <>
+                  <span style={{ marginRight: '10px' }}>{champion}</span>
+                  <span>{player}</span>
+                </>
+              ))}
+            </div>
+          </div>
         }
 
         console.log('initialFormValues', initialFormValues);
         console.log('championsData', championsData);
         console.log('matchData', matchData);
-        if ((!initialFormValues && (!championsData || !matchData))) {
+        if (!championsData || !matchData) {
           return (
             <div>
               <button onClick={getMatchDataCallback} disabled={isMatchDataLoading} type="button">Load match data</button>
@@ -226,8 +234,7 @@
 
         console.log('formattedChampionsData', formattedChampionsData);
         console.log('playersData', playersData);
-        const renderData = formattedChampionsData || initialChampionSlugs;
-        return (renderData) && (
+        return (formattedChampionsData) && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {renderData.map(champion => (
               <div key={champion}>
