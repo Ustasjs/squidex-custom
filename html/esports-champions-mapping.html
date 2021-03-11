@@ -209,6 +209,8 @@
           </div>)
         }
 
+        console.log('initialFormValues', initialFormValues);
+
         if (initialFormValues) {
           return (<div>
             <div className="form-element">
@@ -223,7 +225,6 @@
           </div>)
         }
 
-        console.log('initialFormValues', initialFormValues);
         console.log('championsData', championsData);
         console.log('matchData', matchData);
         if (!championsData || !matchData) {
