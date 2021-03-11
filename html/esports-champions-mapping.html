@@ -57,7 +57,6 @@
         const gameHash = _.get(squidexFormValue, 'gameHash.iv');
         const gameId = _.get(squidexFormValue, 'gameId.iv');
         const region = _.get(squidexFormValue, 'region.iv');
-        const authorizationCookie = _.get(squidexFormValue, 'authorizationCookie.iv');
 
         console.log('matchDataError',  JSON.parse(JSON.stringify(matchDataError)));
 
@@ -122,9 +121,9 @@
                 console.error(error);
               });
           }  
-        }, [gameId, gameHash, region, authorizationCookie, context]);
+        }, [gameId, gameHash, region, context]);
 
-        if (!gameId || !region || !authorizationCookie) {
+        if (!gameId || !region) {
           return (
             <div>Please fill out all required fields</div>
           );
