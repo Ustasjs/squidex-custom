@@ -74,6 +74,13 @@
           });
         }, []);
 
+        const formattedChampionsData = React.useMemo(function () {
+          if (championsData) {
+            return championsData.map(championData => _.get(championData, 'data.slug.iv'));
+          }
+          return null;
+        }, [championsData]);
+
         const getMatchData = React.useCallback(() => {
           if (gameId && region && context) {
             setIsMatchDataLoading(true);
@@ -131,7 +138,7 @@
           </div>)
         }
 
-        if (!matchData && !matchDataError) {
+        if ((!championsData || !matchData) && !matchDataError) {
           return (
             <div>
               <button onClick={getMatchData} isDisabled={isMatchDataLoading} type="button">Load match data</button>
@@ -139,7 +146,19 @@
             </div>
           )}
 
-          return 'Oups';
+          console.log('formattedChampionsData', formattedChampionsData);
+
+          return formattedChampionsData && (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <input name="example" defaultValue="test" ref={register} />
+              
+              <input name="exampleRequired" ref={register({ required: true })} />
+              {/* errors will return when field validation fails  */}
+              {errors.exampleRequired && <span>This field is required</span>}
+              
+              <button type="submit">SAVE</button>
+            </form>
+          );
         }
 
       ReactDOM.render(React.createElement(Editor), document.getElementById('editor'));
