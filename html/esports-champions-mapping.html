@@ -50,6 +50,7 @@
 
     <script type="text/babel">
       const field = new SquidexFormField();
+      console.log('field', field);
       const onClearData = () => field.valueChanged(null);
 
       function getMatchData(region, gameId, gameHash) {
@@ -94,6 +95,7 @@
       function Editor() {
         const squidexFormValue = field.getFormValue();
         const initialValue = _.get(squidexFormValue, 'matchDataMaping.iv');
+
         const [isDisabled, setIsDisabled] = React.useState(false);
         const [value, setValue] = React.useState(initialValue || undefined);
         const [context, setContext] = React.useState(null);
@@ -102,7 +104,7 @@
         const [playersData, setPlayersData] = React.useState(null);
         const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
         const [matchDataError, setMatchDataError] = React.useState(null);
-        console.log('squidexFormValue', squidexFormValue);
+
         const gameHash = _.get(squidexFormValue, 'gameHash.iv');
         const gameId = _.get(squidexFormValue, 'gameId.iv');
         const region = _.get(squidexFormValue, 'region.iv');
@@ -208,14 +210,13 @@
           </div>)
         }
 
-        console.log('initialFormValues', initialFormValues);
-
         if (initialFormValues) {
           return (<div>
             <div className="form-element">
               {Object.entries(initialFormValues).map(([champion, player]) => (
                 <div key={champion}>
-                  <span style={{ marginRight: '10px' }}>{champion}</span>
+                  <span>{champion}</span>
+                  <span style={{ margin: '10px' }}>-</span>
                   <span>{player}</span>
                 </div>
               ))}
@@ -224,19 +225,14 @@
           </div>)
         }
 
-        console.log('championsData', championsData);
-        console.log('matchData', matchData);
         if (!championsData || !matchData) {
           return (
             <div>
               <button onClick={getMatchDataCallback} disabled={isMatchDataLoading} type="button">Load match data</button>
-              {isMatchDataLoading && 'loading...'}
+              {isMatchDataLoading && <div>'loading...'</div>}
             </div>
         )}
 
-        console.log('formattedChampionsData', formattedChampionsData);
-        console.log('formattedPlayersData', formattedPlayersData);
-        console.log('playersData', playersData);
         return (formattedChampionsData) && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {formattedChampionsData.map(champion => (
