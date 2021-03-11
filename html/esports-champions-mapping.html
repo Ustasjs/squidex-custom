@@ -190,10 +190,10 @@
                 <div key={champion}>
                   <div className="form-element">
                     <span style={{ marginRight: '10px' }}>{champion}</span>
-                    <select name={`${champion} player`} ref={register({ required: true })}>
-                      <option key="placeholder" disabled selected value> -- select an option -- </option>
+                    <select name={`${champion}`} ref={register({ required: true })}>
+                      <option key="placeholder" disabled selected value={null}> -- select an option -- </option>
                       {formattedPlayersData.map(playerSlug => (
-                        <option key={playerSlug} value="playerSlug">{playerSlug}</option>
+                        <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
                       ))}
                     </select>
                     {errors[`${champion} player`] && <div className="error form-error">This field is required</div>}
