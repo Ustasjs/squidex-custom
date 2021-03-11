@@ -40,6 +40,29 @@
     <script type="text/babel">
       const field = new SquidexFormField();
 
+      function getMatchData() {
+        return fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
+          method: 'GET',
+          mode: 'cors',
+        })
+      }
+
+      function getChampions(participants) {
+        const filterValue = participants.reduce((acc, element) => {
+          if (acc === '') {
+            return `${element}`;
+          }
+          acc = `${acc}, ${element}`;
+          return acc;
+        }, '')
+        const filter = `$filter=data/riotId/iv in (${filterValue})`;
+        return fetch(`${context.apiUrl}/content/league-v1/champions-v1/?${filter}`, {
+          headers: {
+            Authorization: `Bearer ${context.user.user.access_token}`,
+          },
+        })
+      }
+
       function Editor() {
         const squidexFormValue = field.getFormValue();
         const initialValue = _.get(squidexFormValue, 'matchDataMaping.iv');
@@ -81,13 +104,10 @@
           return null;
         }, [championsData]);
 
-        const getMatchData = React.useCallback(() => {
+        const getMatchDataCallback = React.useCallback(() => {
           if (gameId && region && context) {
             setIsMatchDataLoading(true);
-            fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
-              method: 'GET',
-              mode: 'cors',
-            })
+            getMatchData()
               .then(response => {
                 return response.json();
               })
@@ -97,19 +117,7 @@
                 return participants.map(participant => participant.championId);
               })
               .then(participants => {
-                const filterValue = participants.reduce((acc, element) => {
-                  if (acc === '') {
-                    return `${element}`;
-                  }
-                  acc = `${acc}, ${element}`;
-                  return acc;
-                }, '')
-                const filter = `$filter=data/riotId/iv in (${filterValue})`;
-                return fetch(`${context.apiUrl}/content/league-v1/champions-v1/?${filter}`, {
-                  headers: {
-                    Authorization: `Bearer ${context.user.user.access_token}`,
-                  },
-                })
+                return getChampions(participants);
               })
               .then(response => {
                 return response.json();
@@ -141,7 +149,7 @@
         if ((!championsData || !matchData) && !matchDataError) {
           return (
             <div>
-              <button onClick={getMatchData} isDisabled={isMatchDataLoading} type="button">Load match data</button>
+              <button onClick={getMatchDataCallback} isDisabled={isMatchDataLoading} type="button">Load match data</button>
               {isMatchDataLoading && 'loading...'}
             </div>
           )}
@@ -150,11 +158,13 @@
 
           return formattedChampionsData && (
             <form onSubmit={handleSubmit(onSubmit)}>
-              <input name="example" defaultValue="test" ref={register} />
-              
-              <input name="exampleRequired" ref={register({ required: true })} />
-              {/* errors will return when field validation fails  */}
-              {errors.exampleRequired && <span>This field is required</span>}
+              {formattedChampionsData.map(champion => (
+                <div key={champion}>
+                  <span style={{ marginRight: '10px' }}>{champion}</span>
+                  <input name={`${champion} player`} ref={register({ required: true })} />
+                  {errors.exampleRequired && <div>This field is required</div>}
+                </div>
+              ))}
               
               <button type="submit">SAVE</button>
             </form>
