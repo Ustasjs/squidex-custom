@@ -50,6 +50,7 @@
 
     <script type="text/babel">
       const field = new SquidexFormField();
+      const onClearData = () => field.valueChanged(null);
 
       function getMatchData(region, gameId, gameHash) {
         return fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
@@ -218,6 +219,7 @@
                 </div>
               ))}
             </div>
+            <button onClick={onClearData} type="button">Clear data</button>
           </div>)
         }
 
