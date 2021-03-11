@@ -195,7 +195,9 @@
             <div>{matchDataError}</div>
           </div>)
         }
-
+        console.log('initialFormValues', initialFormValues);
+        console.log('championsData', championsData);
+        console.log('matchData', matchData);
         if ((!initialFormValues && (!championsData || !matchData))) {
           return (
             <div>
