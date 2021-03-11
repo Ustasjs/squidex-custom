@@ -31,6 +31,17 @@
       .error {
         color: red;
       }
+
+      .form-group {
+        margin-bottom: 25px;
+        position: relative;
+      }
+
+      .form-error {
+        position: absolute;
+        left: 0;
+        top: 33px;
+      }
     </style>
   </head>
 
@@ -44,6 +55,8 @@
         return fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
           method: 'GET',
           mode: 'cors',
+        }).then(response => {
+          return response.json();
         })
       }
 
@@ -60,6 +73,18 @@
           headers: {
             Authorization: `Bearer ${context.user.user.access_token}`,
           },
+        }).then(response => {
+          return response.json();
+        })
+      }
+
+      function getPlayers(context) {
+        return fetch(`${context.apiUrl}/content/esports-v1/esports-players-v1/`, {
+          headers: {
+            Authorization: `Bearer ${context.user.user.access_token}`,
+          },
+        }).then(response => {
+          return response.json();
         })
       }
 
@@ -71,6 +96,7 @@
         const [context, setContext] = React.useState(null);
         const [championsData, setChampionsData] = React.useState(null);
         const [matchData, setMatchData] = React.useState(null);
+        const [playersData, setPlayersData] = React.useState(null);
         const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
         const [matchDataError, setMatchDataError] = React.useState(null);
 
@@ -107,20 +133,15 @@
         const getMatchDataCallback = React.useCallback(() => {
           if (gameId && region && context) {
             setIsMatchDataLoading(true);
-            getMatchData(region, gameId, gameHash)
-              .then(response => {
-                return response.json();
-              })
-              .then(parsedData => {
-                setMatchData(parsedData);
-                const participants = _.get(parsedData, 'Data.participants');
+            Promise.all([getMatchData(region, gameId, gameHash), getPlayers(context)])
+              .then(([parsedMatchData, parsedPlayersData]) => {
+                setMatchData(parsedMatchData);
+                setPlayersData(parsedPlayersData);
+                const participants = _.get(parsedMatchData, 'Data.participants');
                 return participants.map(participant => participant.championId);
               })
               .then(participants => {
                 return getChampions(participants, context);
-              })
-              .then(response => {
-                return response.json();
               })
               .then(parsedData => {
                 setIsMatchDataLoading(false);
@@ -155,14 +176,17 @@
           )}
 
           console.log('formattedChampionsData', formattedChampionsData);
+          console.log('playersData', playersData);
 
           return formattedChampionsData && (
             <form onSubmit={handleSubmit(onSubmit)}>
               {formattedChampionsData.map(champion => (
                 <div key={champion}>
-                  <span style={{ marginRight: '10px' }}>{champion}</span>
-                  <input name={`${champion} player`} ref={register({ required: true })} />
-                  {errors[`${champion} player`] && <div>This field is required</div>}
+                  <div className="form-group">
+                    <span style={{ marginRight: '10px' }}>{champion}</span>
+                    <input name={`${champion} player`} ref={register({ required: true })} />
+                    {errors[`${champion} player`] && <div className="error form-error">This field is required</div>}
+                  </div>
                 </div>
               ))}
               
