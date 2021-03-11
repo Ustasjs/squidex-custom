@@ -124,7 +124,6 @@
 
         const { register, handleSubmit, errors, control } = ReactHookForm.useForm({
           onTouched: () => squidexFormValue.touched(),
-          defaultValues: initialFormValues,
         });
         const onSubmit = data => {
           const formattedFormData = Object.entries(data).map(([key, value]) => ({ championSlug: key, playerSlug: value }));
