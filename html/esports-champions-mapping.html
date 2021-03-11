@@ -82,12 +82,9 @@
         }, []);
 
         const getMatchData = React.useCallback(() => {
-          if (gameId && region && authorizationCookie && context) {
+          if (gameId && region && context) {
             setIsMatchDataLoading(true);
-            fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
-              headers: {
-                'Cookie': authorizationCookie,
-              },
+            fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
               method: 'GET',
               mode: 'no-cors',
               credentials: 'include'
