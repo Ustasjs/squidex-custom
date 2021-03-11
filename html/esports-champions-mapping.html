@@ -84,12 +84,7 @@
         const getMatchData = React.useCallback(() => {
           if (gameId && region && authorizationCookie && context) {
             setIsMatchDataLoading(true);
-            fetch(`https://dev-lol-backend-esports-dev-esports-http.us.moba.live/v1/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
-              mode: 'no-cors',
-              headers: {
-                'Referrer-Policy': 'no-referrer-when-downgrade'
-              },
-            })
+            fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`)
               .then(response => {
                 return response.json();
               })
