@@ -40,7 +40,7 @@
     <script type="text/babel">
       const field = new SquidexFormField();
 
-      function getMatchData() {
+      function getMatchData(region, gameId, gameHash) {
         return fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
           method: 'GET',
           mode: 'cors',
@@ -107,7 +107,7 @@
         const getMatchDataCallback = React.useCallback(() => {
           if (gameId && region && context) {
             setIsMatchDataLoading(true);
-            getMatchData()
+            getMatchData(region, gameId, gameHash)
               .then(response => {
                 return response.json();
               })
@@ -149,7 +149,7 @@
         if ((!championsData || !matchData) && !matchDataError) {
           return (
             <div>
-              <button onClick={getMatchDataCallback} isDisabled={isMatchDataLoading} type="button">Load match data</button>
+              <button onClick={getMatchDataCallback} disabled={isMatchDataLoading} type="button">Load match data</button>
               {isMatchDataLoading && 'loading...'}
             </div>
           )}
