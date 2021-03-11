@@ -105,13 +105,25 @@
         const gameHash = _.get(squidexFormValue, 'gameHash.iv');
         const gameId = _.get(squidexFormValue, 'gameId.iv');
         const region = _.get(squidexFormValue, 'region.iv');
+        const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv');
 
         field.onInit(intializedContext => {
           setContext(intializedContext);
         });
 
+        const initialFormValues = React.useMemo(() => {
+          if (champion2PlayerMap) {
+            return champion2PlayerMap.reduce((acc, element) => {
+              acc[element.championSlug] = element.playerSlug;
+              return acc;
+            }, {});
+          }
+          return null;
+        }, [champion2PlayerMap])
+
         const { register, handleSubmit, errors, control } = ReactHookForm.useForm({
           onTouched: () => squidexFormValue.touched(),
+          defaultValues: initialFormValues,
         });
         const onSubmit = data => {
           const formattedFormData = Object.entries(data).map(([key, value]) => ({ championSlug: key, playerSlug: value }));
@@ -183,7 +195,7 @@
           </div>)
         }
 
-        if ((!championsData || !matchData) && !matchDataError) {
+        if (!initialFormValues && (!championsData || !matchData) && !matchDataError) {
           return (
             <div>
               <button onClick={getMatchDataCallback} disabled={isMatchDataLoading} type="button">Load match data</button>
@@ -200,8 +212,8 @@
                 <div key={champion}>
                   <div className="form-element">
                     <span style={{ marginRight: '10px' }}>{champion}</span>
-                    <select name={`${champion}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
-                      <option key="placeholder" disabled selected value={PLACEHOLDER_VALUE}> -- select an option -- </option>
+                    <select defaultValue={PLACEHOLDER_VALUE} name={`${champion}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
+                      <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
                       {formattedPlayersData.map(playerSlug => (
                         <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
                       ))}
