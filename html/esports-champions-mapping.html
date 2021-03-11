@@ -145,6 +145,14 @@
           field.onValueChanged(function (value) {
             setValue(value);
           });
+          getPlayers(context)
+          .then(parsedPlayers => {
+            setPlayersData(parsedPlayersData);
+          })
+          .catch(error => {
+            setMatchDataError(error.message);
+            console.error(error);
+          });
         }, []);
 
         const formattedChampionsData = React.useMemo(function () {
@@ -163,10 +171,9 @@
         const getMatchDataCallback = React.useCallback(() => {
           if (gameId && region && context) {
             setIsMatchDataLoading(true);
-            Promise.all([getMatchData(region, gameId, gameHash), getPlayers(context)])
-              .then(([parsedMatchData, parsedPlayersData]) => {
+            Promise.all(getMatchData(region, gameId, gameHash))
+              .then((parsedMatchData) => {
                 setMatchData(parsedMatchData);
-                setPlayersData(parsedPlayersData);
                 const participants = _.get(parsedMatchData, 'Data.participants');
                 return participants.map(participant => participant.championId);
               })
@@ -196,6 +203,11 @@
             <div>{matchDataError}</div>
           </div>)
         }
+        
+        if (!playersData) {
+          return <div>loading players data...</div>
+        }
+
         console.log('initialFormValues', initialFormValues);
         console.log('championsData', championsData);
         console.log('matchData', matchData);
