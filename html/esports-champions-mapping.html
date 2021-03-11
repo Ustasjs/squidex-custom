@@ -32,7 +32,7 @@
         color: red;
       }
 
-      .form-group {
+      .form-element {
         margin-bottom: 25px;
         position: relative;
       }
@@ -129,6 +129,12 @@
           }
           return null;
         }, [championsData]);
+        const formattedPlayersData = React.useMemo(function () {
+          if (playersData) {
+            return playersData.items.map(championData => _.get(championData, 'data.slug.iv'));
+          }
+          return null;
+        }, [playersData]);
 
         const getMatchDataCallback = React.useCallback(() => {
           if (gameId && region && context) {
@@ -182,9 +188,13 @@
             <form onSubmit={handleSubmit(onSubmit)}>
               {formattedChampionsData.map(champion => (
                 <div key={champion}>
-                  <div className="form-group">
+                  <div className="form-element">
                     <span style={{ marginRight: '10px' }}>{champion}</span>
-                    <input name={`${champion} player`} ref={register({ required: true })} />
+                    <select name={`${champion} player`} ref={register({ required: true })}>
+                      {formattedPlayersData.map(playerSlug => (
+                        <option key={playerSlug} value="playerSlug">{playerSlug}</option>
+                      ))}
+                    </select>
                     {errors[`${champion} player`] && <div className="error form-error">This field is required</div>}
                   </div>
                 </div>
