@@ -101,7 +101,7 @@
         const [playersData, setPlayersData] = React.useState(null);
         const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
         const [matchDataError, setMatchDataError] = React.useState(null);
-
+        console.log('squidexFormValue', squidexFormValue);
         const gameHash = _.get(squidexFormValue, 'gameHash.iv');
         const gameId = _.get(squidexFormValue, 'gameId.iv');
         const region = _.get(squidexFormValue, 'region.iv');
