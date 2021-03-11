@@ -239,7 +239,7 @@
         console.log('playersData', playersData);
         return (formattedChampionsData) && (
           <form onSubmit={handleSubmit(onSubmit)}>
-            {renderData.map(champion => (
+            {formattedChampionsData.map(champion => (
               <div key={champion}>
                 <div className="form-element">
                   <span style={{ marginRight: '10px' }}>{champion}</span>
