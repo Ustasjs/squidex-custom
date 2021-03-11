@@ -47,7 +47,7 @@
         })
       }
 
-      function getChampions(participants) {
+      function getChampions(participants, context) {
         const filterValue = participants.reduce((acc, element) => {
           if (acc === '') {
             return `${element}`;
@@ -117,7 +117,7 @@
                 return participants.map(participant => participant.championId);
               })
               .then(participants => {
-                return getChampions(participants);
+                return getChampions(participants, context);
               })
               .then(response => {
                 return response.json();
