@@ -209,16 +209,16 @@
         }
 
         if (initialFormValues) {
-          <div>
+          return (<div>
             <div className="form-element">
               {Object.entries(initialFormValues).map(([champion, player]) => (
-                <div>
+                <div key={champion}>
                   <span style={{ marginRight: '10px' }}>{champion}</span>
                   <span>{player}</span>
                 </div>
               ))}
             </div>
-          </div>
+          </div>)
         }
 
         console.log('initialFormValues', initialFormValues);
