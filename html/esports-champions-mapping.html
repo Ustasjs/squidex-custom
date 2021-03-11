@@ -196,38 +196,38 @@
           </div>)
         }
 
-        if ((!initialFormValues && (!championsData || !matchData)) && !matchDataError) {
+        if ((!initialFormValues && (!championsData || !matchData))) {
           return (
             <div>
               <button onClick={getMatchDataCallback} disabled={isMatchDataLoading} type="button">Load match data</button>
               {isMatchDataLoading && 'loading...'}
             </div>
-          )}
+        )}
 
-          console.log('formattedChampionsData', formattedChampionsData);
-          console.log('playersData', playersData);
-          const renderData = formattedChampionsData || initialChampionSlugs;
-          return (renderData) && (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              {renderData.map(champion => (
-                <div key={champion}>
-                  <div className="form-element">
-                    <span style={{ marginRight: '10px' }}>{champion}</span>
-                    <select defaultValue={PLACEHOLDER_VALUE} name={`${champion}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
-                      <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
-                      {formattedPlayersData.map(playerSlug => (
-                        <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
-                      ))}
-                    </select>
-                    {errors[champion] && <div className="error form-error">This field is required</div>}
-                  </div>
+        console.log('formattedChampionsData', formattedChampionsData);
+        console.log('playersData', playersData);
+        const renderData = formattedChampionsData || initialChampionSlugs;
+        return (renderData) && (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {renderData.map(champion => (
+              <div key={champion}>
+                <div className="form-element">
+                  <span style={{ marginRight: '10px' }}>{champion}</span>
+                  <select defaultValue={PLACEHOLDER_VALUE} name={`${champion}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
+                    <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
+                    {formattedPlayersData.map(playerSlug => (
+                      <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
+                    ))}
+                  </select>
+                  {errors[champion] && <div className="error form-error">This field is required</div>}
                 </div>
-              ))}
-              
-              <button type="submit">SAVE</button>
-            </form>
-          );
-        }
+              </div>
+            ))}
+            
+            <button type="submit">SAVE</button>
+          </form>
+        );
+      }
 
       ReactDOM.render(React.createElement(Editor), document.getElementById('editor'));
     </script>
