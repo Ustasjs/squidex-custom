@@ -89,6 +89,8 @@
                 mode: 'no-cors',
                 'Referrer-Policy': 'no-referrer-when-downgrade'
               },
+              method: 'GET',
+              credentials: 'include'
             })
               .then(response => {
                 return response.json();
