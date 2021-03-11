@@ -206,7 +206,7 @@
           console.log('formattedChampionsData', formattedChampionsData);
           console.log('playersData', playersData);
 
-          return formattedChampionsData && (
+          return (formattedChampionsData || initialFormValues) && (
             <form onSubmit={handleSubmit(onSubmit)}>
               {formattedChampionsData.map(champion => (
                 <div key={champion}>
