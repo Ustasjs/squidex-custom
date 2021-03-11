@@ -162,7 +162,7 @@
                 <div key={champion}>
                   <span style={{ marginRight: '10px' }}>{champion}</span>
                   <input name={`${champion} player`} ref={register({ required: true })} />
-                  {errors.exampleRequired && <div>This field is required</div>}
+                  {errors[`${champion} player`] && <div>This field is required</div>}
                 </div>
               ))}
               
