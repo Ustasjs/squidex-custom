@@ -40,7 +40,7 @@
       .form-error {
         position: absolute;
         left: 0;
-        top: 33px;
+        top: 23px;
       }
     </style>
   </head>
@@ -93,8 +93,6 @@
       function Editor() {
         const squidexFormValue = field.getFormValue();
         const initialValue = _.get(squidexFormValue, 'matchDataMaping.iv');
-        const [isDisabled, setIsDisabled] = React.useState(false);
-        const [value, setValue] = React.useState(initialValue || undefined);
         const [context, setContext] = React.useState(null);
         const [championsData, setChampionsData] = React.useState(null);
         const [matchData, setMatchData] = React.useState(null);
@@ -110,20 +108,18 @@
           setContext(intializedContext);
         });
 
-        const { register, handleSubmit, errors, control } = ReactHookForm.useForm();
+        const { register, handleSubmit, errors, control } = ReactHookForm.useForm({
+          onTouched: () => squidexFormValue.touched(),
+        });
         const onSubmit = data => {
-          console.log(data);
+          const formattedFormData = Object.entries(data).map(([key, value]) => ({ championSlug: key, playerSlug: value }));
+          const fieldValue = {
+            matchData,
+            champion2PlayerMap: formattedFormData,
+          }
+          squidexFormValue.valueChanged(fieldValue);
+          console.log(formattedFormData);
         }
-
-        React.useEffect(function () {
-          field.onDisabled(function (disabled) {
-            setIsDisabled(disabled);
-          });
-
-          field.onValueChanged(function (value) {
-            setValue(value);
-          });
-        }, []);
 
         const formattedChampionsData = React.useMemo(function () {
           if (championsData) {
@@ -182,9 +178,6 @@
               {isMatchDataLoading && 'loading...'}
             </div>
           )}
-
-          console.log('formattedChampionsData', formattedChampionsData);
-          console.log('playersData', playersData);
 
           return formattedChampionsData && (
             <form onSubmit={handleSubmit(onSubmit)}>
