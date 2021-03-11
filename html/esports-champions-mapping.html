@@ -151,7 +151,7 @@
           if (context) {
             getPlayers(context)
               .then(parsedPlayers => {
-                setPlayersData(parsedPlayersData);
+                setPlayersData(parsedPlayers);
               })
               .catch(error => {
                 setMatchDataError(error.message);
