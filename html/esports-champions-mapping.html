@@ -104,6 +104,7 @@
         const [playersData, setPlayersData] = React.useState(null);
         const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
         const [matchDataError, setMatchDataError] = React.useState(null);
+        const [showSaveTableMessage, setShowSaveTableMessage] = React.useState(false);
 
         const gameHash = _.get(squidexFormValue, 'gameHash.iv');
         const gameId = _.get(squidexFormValue, 'gameId.iv');
@@ -145,7 +146,10 @@
           field.onValueChanged(function (value) {
             setValue(value);
           });
+
+          field.onFormValueChanged(() => {setShowSaveTableMessage(false)})
         }, []);
+        
 
         React.useEffect(function () {
           if (context) {
@@ -222,6 +226,7 @@
               ))}
             </div>
             <button onClick={onClearData} type="button">Clear data</button>
+            {showSaveTableMessage && <span className="error">Save the table please</span>}
           </div>)
         }
 
