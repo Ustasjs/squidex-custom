@@ -76,7 +76,7 @@
 
         const formattedChampionsData = React.useMemo(function () {
           if (championsData) {
-            return championsData.map(championData => _.get(championData, 'data.slug.iv'));
+            return championsData.items.map(championData => _.get(championData, 'data.slug.iv'));
           }
           return null;
         }, [championsData]);
