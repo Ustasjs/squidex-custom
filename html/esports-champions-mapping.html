@@ -87,9 +87,9 @@
             fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
               method: 'GET',
               mode: 'no-cors',
-              credentials: 'include'
             })
               .then(response => {
+                console.log('response', response);
                 return response.json();
               })
               .then(parsedData => {
