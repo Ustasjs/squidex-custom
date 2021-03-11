@@ -118,6 +118,7 @@
               return acc;
             }, {});
             const initialChampionSlugs = Object.keys(initialFormValues);
+            return { initialFormValues, initialChampionSlugs };
           }
           return {};
         }, [champion2PlayerMap])
