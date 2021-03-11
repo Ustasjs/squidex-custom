@@ -198,7 +198,7 @@
                         <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
                       ))}
                     </select>
-                    {errors[`${champion} player`] && <div className="error form-error">This field is required</div>}
+                    {errors[champion] && <div className="error form-error">This field is required</div>}
                   </div>
                 </div>
               ))}
