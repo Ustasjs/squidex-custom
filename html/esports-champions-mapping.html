@@ -86,10 +86,10 @@
             setIsMatchDataLoading(true);
             fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
               headers: {
-                mode: 'cors',
-                'Referrer-Policy': 'no-referrer-when-downgrade'
+                'Cookie': authorizationCookie,
               },
               method: 'GET',
+              mode: 'no-cors',
               credentials: 'include'
             })
               .then(response => {
