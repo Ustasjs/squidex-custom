@@ -84,7 +84,11 @@
         const getMatchData = React.useCallback(() => {
           if (gameId && region && authorizationCookie && context) {
             setIsMatchDataLoading(true);
-            fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`)
+            fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
+              headers: {
+                'Referrer-Policy': 'no-referrer-when-downgrade'
+              },
+            })
               .then(response => {
                 return response.json();
               })
