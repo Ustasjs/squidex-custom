@@ -192,7 +192,7 @@
                 <div key={champion}>
                   <div className="form-element">
                     <span style={{ marginRight: '10px' }}>{champion}</span>
-                    <select name={`${champion}`} ref={register({ required: true, validate: value => value === PLACEHOLDER_VALUE })}>
+                    <select name={`${champion}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                       <option key="placeholder" disabled selected value={PLACEHOLDER_VALUE}> -- select an option -- </option>
                       {formattedPlayersData.map(playerSlug => (
                         <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
