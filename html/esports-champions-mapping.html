@@ -196,7 +196,7 @@
           </div>)
         }
 
-        if (!initialFormValues && (!championsData || !matchData) && !matchDataError) {
+        if ((!initialFormValues && (!championsData || !matchData)) && !matchDataError) {
           return (
             <div>
               <button onClick={getMatchDataCallback} disabled={isMatchDataLoading} type="button">Load match data</button>
