@@ -145,15 +145,20 @@
           field.onValueChanged(function (value) {
             setValue(value);
           });
-          getPlayers(context)
-          .then(parsedPlayers => {
-            setPlayersData(parsedPlayersData);
-          })
-          .catch(error => {
-            setMatchDataError(error.message);
-            console.error(error);
-          });
         }, []);
+
+        React.useEffect(function () {
+          if (context) {
+            getPlayers(context)
+              .then(parsedPlayers => {
+                setPlayersData(parsedPlayersData);
+              })
+              .catch(error => {
+                setMatchDataError(error.message);
+                console.error(error);
+              });
+          }
+        }, [context]);
 
         const formattedChampionsData = React.useMemo(function () {
           if (championsData) {
