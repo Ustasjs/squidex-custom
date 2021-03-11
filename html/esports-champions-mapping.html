@@ -113,6 +113,7 @@
 
         const { initialFormValues, initialChampionSlugs} = React.useMemo(() => {
           if (champion2PlayerMap) {
+            console.log('champion2PlayerMap', champion2PlayerMap);
             const initialFormValues = champion2PlayerMap.reduce((acc, element) => {
               acc[element.championSlug] = element.playerSlug;
               return acc;
