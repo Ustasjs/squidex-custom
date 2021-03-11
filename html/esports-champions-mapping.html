@@ -40,7 +40,7 @@
       .form-error {
         position: absolute;
         left: 0;
-        top: 33px;
+        top: 23px;
       }
     </style>
   </head>
@@ -110,9 +110,17 @@
           setContext(intializedContext);
         });
 
-        const { register, handleSubmit, errors, control } = ReactHookForm.useForm();
+        const { register, handleSubmit, errors, control } = ReactHookForm.useForm({
+          onTouched: () => squidexFormValue.touched(),
+        });
         const onSubmit = data => {
-          console.log(data);
+          const formattedFormData = Object.entries(data).map(([key, value]) => ({ championSlug: key, playerSlug: value }));
+          const fieldValue = {
+            matchData,
+            champion2PlayerMap: formattedFormData,
+          }
+          squidexFormValue.valueChanged(fieldValue);
+          console.log(formattedFormData);
         }
 
         React.useEffect(function () {
