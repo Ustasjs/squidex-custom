@@ -270,8 +270,8 @@
             {formattedChampionsData.map(champion => (
               <div key={champion}>
                 <div className="form-element">
-                  <span  style={{ marginRight: '10px' }} className=".champion-data_wrapper">
-                    <img src={championImage(champion)} className=".champion-data_icon"/>
+                  <span  style={{ marginRight: '10px' }} className="champion-data_wrapper">
+                    <img src={championImage(champion)} className="champion-data_icon"/>
                     <span>{champion}</span>
                   </span>
                   <select defaultValue={PLACEHOLDER_VALUE} name={`${champion}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
