@@ -144,6 +144,7 @@
 
           field.onValueChanged(function (value) {
             setValue(value);
+            setShowSaveTableMessage(false);
           });
 
           field.onFormValueChanged(() => {setShowSaveTableMessage(false)})
