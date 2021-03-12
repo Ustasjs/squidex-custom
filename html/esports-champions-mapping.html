@@ -103,7 +103,7 @@
         const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
         const [matchDataError, setMatchDataError] = React.useState(null);
         const [showSaveTableMessage, setShowSaveTableMessage] = React.useState(false);
-
+        console.log('showSaveTableMessage', showSaveTableMessage);
         const gameHash = _.get(squidexFormValue, 'gameHash.iv');
         const gameId = _.get(squidexFormValue, 'gameId.iv');
         const region = _.get(squidexFormValue, 'region.iv');
@@ -133,6 +133,7 @@
             champion2PlayerMap: formattedFormData,
           }
           field.valueChanged(fieldValue);
+          setShowSaveTableMessage(true);
           console.log(formattedFormData);
         }
 
