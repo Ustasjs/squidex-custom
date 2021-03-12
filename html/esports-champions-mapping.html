@@ -42,6 +42,21 @@
         left: 0;
         top: 23px;
       }
+
+      .champion-data_wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .champion-data_icon {
+        margin-right: 8px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
+
     </style>
   </head>
 
@@ -86,6 +101,10 @@
         }).then(response => {
           return response.json();
         })
+      }
+
+      function championImage(slug) {
+        return `https://storage.googleapis.com/cdn.mobalytics.gg/assets/lol/images/dd/champions/icons/${slug.toLowerCase()}.png`;
       }
 
       const PLACEHOLDER_VALUE = 'placeholder-value';
@@ -225,7 +244,10 @@
             <div className="form-element">
               {Object.entries(initialFormValues).map(([champion, player]) => (
                 <div key={champion}>
-                  <span>{champion}</span>
+                  <span className=".champion-data_wrapper">
+                    <img src={championImage(champion)} className=".champion-data_icon"/>
+                    <span>{champion}</span>
+                  </span>
                   <span style={{ margin: '10px' }}>-</span>
                   <span>{player}</span>
                 </div>
@@ -248,7 +270,10 @@
             {formattedChampionsData.map(champion => (
               <div key={champion}>
                 <div className="form-element">
-                  <span style={{ marginRight: '10px' }}>{champion}</span>
+                  <span  style={{ marginRight: '10px' }} className=".champion-data_wrapper">
+                    <img src={championImage(champion)} className=".champion-data_icon"/>
+                    <span>{champion}</span>
+                  </span>
                   <select defaultValue={PLACEHOLDER_VALUE} name={`${champion}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                     <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
                     {formattedPlayersData.map(playerSlug => (
