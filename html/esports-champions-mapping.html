@@ -136,6 +136,7 @@
         });
         console.log('gameId', gameId);
         React.useEffect(function () {
+          console.log('gameId inner', gameId);
           setMatchData(null);
           setMatchDataError(null);
         }, [gameHash, gameId, region, setMatchData, setMatchDataError]);
@@ -200,7 +201,7 @@
                 console.error(error);
               });
           }
-        }, [context]);
+        }, [context, setPlayersData, setMatchDataError]);
 
         const participantsWithTeams = React.useMemo(function () {
           if (matchData) {
