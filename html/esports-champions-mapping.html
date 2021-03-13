@@ -135,6 +135,10 @@
           setContext(intializedContext);
         });
 
+        React.useEffect(function () {
+          setMatchData(null);
+        }, [gameHash, gameId, region]);
+
         const initialFormValues = React.useMemo(() => {
           if (champion2PlayerMap) {
             const data = Object.values(champion2PlayerMap);
