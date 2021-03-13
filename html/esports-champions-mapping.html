@@ -137,6 +137,7 @@
 
         React.useEffect(function () {
           setMatchData(null);
+          setMatchDataError(null);
         }, [gameHash, gameId, region]);
 
         const initialFormValues = React.useMemo(() => {
