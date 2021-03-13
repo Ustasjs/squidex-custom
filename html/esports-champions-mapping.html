@@ -234,6 +234,7 @@
               })
               .catch(error => {
                 setMatchDataError(error.message);
+                setIsMatchDataLoading(false);
                 console.error(error);
               });
           }  
