@@ -136,10 +136,9 @@
 
         const initialFormValues = React.useMemo(() => {
           if (champion2PlayerMap) {
-            return champion2PlayerMap.reduce((acc, element) => {
-              acc[element.championSlug] = element.playerSlug;
-              return acc;
-            }, {});
+            const data = Object.values(champion2PlayerMap);
+            const team2ParticipantMap = _.groupBy(data, 'teamId');
+            return Object.values(team2ParticipantMap)
           }
           return null;
         }, [champion2PlayerMap])
@@ -248,16 +247,22 @@
         if (initialFormValues) {
           return (<div>
             <div className="form-element">
-              {Object.entries(initialFormValues).map(([champion, player]) => (
-                <div className="flex-wrapper" key={champion}>
-                  <span className="flex-wrapper">
-                    <img src={championImage(champion)} className="champion-data_icon"/>
-                    <span>{champion}</span>
-                  </span>
-                  <span style={{ margin: '10px' }}>-</span>
-                  <span>{player}</span>
+              {initialFormValues.map(team => (
+                <div>
+                  <div className="team-title">{`Team ${index + 1}`}</div>
+                  {initialFormteamValues.map((participant) => (
+                    <div className="flex-wrapper" key={participant.playerSlug}>
+                      <span className="flex-wrapper">
+                        <img src={championImage(participant.championSlug)} className="champion-data_icon"/>
+                        <span>{participant.championSlug}</span>
+                      </span>
+                      <span style={{ margin: '10px' }}>-</span>
+                      <span>{participant.playerSlug}</span>
+                    </div>
+                  ))}
                 </div>
               ))}
+              
             </div>
             <button onClick={onClearData} type="button">Clear data</button>
           </div>)
@@ -287,7 +292,7 @@
                         <select defaultValue={PLACEHOLDER_VALUE} name={`${Champion.Slug}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                           <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
                           {formattedPlayersData.map(playerSlug => {
-                            const value = JSON.stringify({ playerSlug, teamId: TeamId, championSlug: Champion.Slug });
+                            const value = JSON.stringify({ playerSlug, playerId: ParticipantId, teamId: TeamId, championSlug: Champion.Slug });
                             return (
                               <option key={playerSlug} value={value}>{playerSlug}</option>
                             )
