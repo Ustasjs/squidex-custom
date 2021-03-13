@@ -149,7 +149,7 @@
         });
 
         const onSubmit = React.useCallback(data => {
-          const formattedFormData = Object.values(useCallback).map((value) => JSON.parse(value));
+          const formattedFormData = Object.values(data).map((value) => JSON.parse(value));
           console.log('formattedFormData', formattedFormData);
           const playersSlugs = formattedFormData.map(element => element.playerSlug);
           const uniquePlayersSlugs = new Set(playersSlugs);
