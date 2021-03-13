@@ -131,28 +131,13 @@
         const region = _.get(squidexFormValue, 'region.iv');
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
 
-        const usePrevious = (value) => {
-          const ref = React.useRef();
-          React.useEffect(() => {
-            ref.current = value;
-          });
-          return ref.current;
-        }
-        const prevParams = usePrevious({ gameHash, gameId, region });
-
-        console.log('squidexFormValue', squidexFormValue);
         field.onInit(intializedContext => {
           setContext(intializedContext);
         });
         console.log('gameId', gameId);
         React.useEffect(() => {
-          if (prevParams && ((prevParams.gameHash && prevParams.gameHash !== gameHash)
-            || (prevParams.gameId && prevParams.gameId !== gameId)
-            || (prevParams.region && prevParams.region !== region))) {
-              console.log('prevParams.gameId', prevParams.gameId);
-            setMatchData(null);
-            setMatchDataError(null);
-          }
+          setMatchData(null);
+          setMatchDataError(null);
         }, [gameHash, gameId, region, setMatchData, setMatchDataError]);
 
         const initialFormValues = React.useMemo(() => {
