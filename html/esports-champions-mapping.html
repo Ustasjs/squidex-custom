@@ -183,8 +183,8 @@
             setShowSaveTableMessage(false);
           });
 
-          field.onFormValueChanged(() => {
-            console.log('onFormValueChanged');
+          field.onFormValueChanged((arg) => {
+            console.log('onFormValueChanged', arg);
             setShowSaveTableMessage(false);
           })
         }, []);
