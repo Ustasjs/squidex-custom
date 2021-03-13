@@ -129,10 +129,11 @@
         const gameUrl = _.get(squidexFormValue, 'gameUrl.iv');
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
         console.log('squidexFormValue', squidexFormValue);
+        console.log('gameUrl', gameUrl);
         const { gameId, region, gameHash } = React.useMemo(() => {
           if (gameUrl) {
             const url = new URL(gameUrl);
-            const urlSections = url.split('/');
+            const urlSections = url.pathname.split('/');
             const gameId = urlSections[urlSections.length - 1];
             const region = urlSections[urlSections.length - 2];
             const params = url.searchParams;
