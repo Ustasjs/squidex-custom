@@ -129,7 +129,7 @@
         const gameId = _.get(squidexFormValue, 'gameId.iv');
         const region = _.get(squidexFormValue, 'region.iv');
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
-        console.log('squidexFormValue', squidexFormValue);
+
         field.onInit(intializedContext => {
           setContext(intializedContext);
         });
@@ -147,7 +147,6 @@
           onTouched: () => squidexFormValue.touched(),
         });
         const onSubmit = data => {
-          console.log('data', data);
           const formattedFormData = Object.values(data).map((value) => JSON.parse(value));
           const fieldValue = {
             matchData,
@@ -248,7 +247,7 @@
           return (<div>
             <div className="form-element">
               {initialFormValues.map((team, index) => (
-                <div>
+                <div style={{ marginBottom: index === 0 ? '10px' : undefined }} key={index}>
                   <div className="team-title">{`Team ${index + 1}`}</div>
                   {team.map((participant) => (
                     <div className="flex-wrapper" key={participant.playerSlug}>
@@ -275,11 +274,11 @@
               {isMatchDataLoading && <div>'loading...'</div>}
             </div>
         )}
-        console.log('participantsWithTeams', participantsWithTeams);
+
         return (participantsWithTeams) && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {participantsWithTeams.map((team, index) => (
-              <div key={index}>
+              <div style={{ marginBottom: index === 0 ? '10px' : undefined }} key={index}>
                 <div className="team-title">{`Team ${index + 1}`}</div>
                 {team.map(({ ParticipantId, Champion, TeamId }) => (
                   <div key={ParticipantId}>
@@ -292,7 +291,7 @@
                         <select defaultValue={PLACEHOLDER_VALUE} name={`${Champion.Slug}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                           <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
                           {formattedPlayersData.map(playerSlug => {
-                            const value = JSON.stringify({ playerSlug, playerId: ParticipantId, teamId: TeamId, championSlug: Champion.Slug });
+                            const value = JSON.stringify({ playerSlug, playerId: ParticipantId, teamId: TeamId, championSlug: Champion.Slug, championId: Champion.Id });
                             return (
                               <option key={playerSlug} value={value}>{playerSlug}</option>
                             )
