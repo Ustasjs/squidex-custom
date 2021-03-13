@@ -185,7 +185,7 @@
           }
         }, [context]);
 
-        const championsDataGroupedByTeam = React.useMemo(function () {
+        const participantsWithTeams = React.useMemo(function () {
           if (matchData) {
             const rawParticipants = _.get(matchData, 'Data.participants');
             const championsMapping = _.get(matchData, 'Mappings');
@@ -197,7 +197,8 @@
               )
               return { ...element, TeamId: rawParticipantElement.teamId };
             });
-            return _.groupBy(formattedChampionsData, 'TeamId');
+            const team2ParticipantMap = _.groupBy(formattedChampionsData, 'TeamId');
+            return Object.values(team2ParticipantMap);
           }
           return null;
         }, [matchData]);
@@ -268,10 +269,10 @@
               {isMatchDataLoading && <div>'loading...'</div>}
             </div>
         )}
-        console.log('championsDataGroupedByTeam', championsDataGroupedByTeam);
-        return (championsDataGroupedByTeam) && (
+        console.log('participantsWithTeams', participantsWithTeams);
+        return (participantsWithTeams) && (
           <form onSubmit={handleSubmit(onSubmit)}>
-            {championsDataGroupedByTeam.map((team, index) => (
+            {participantsWithTeams.map((team, index) => (
               <div>
                 <div className="team-title">{`Team ${index + 1}`}</div>
                 {team.map(({ ParticipantId, Champion }) => (
