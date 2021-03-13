@@ -126,11 +126,26 @@
         const [matchDataError, setMatchDataError] = React.useState(null);
         const [showSaveTableMessage, setShowSaveTableMessage] = React.useState(false);
         const [formValidationError, setFormValidationError] = React.useState(null);
-        const gameHash = _.get(squidexFormValue, 'gameHash.iv');
-        const gameId = _.get(squidexFormValue, 'gameId.iv');
-        const region = _.get(squidexFormValue, 'region.iv');
+        const gameUrl = _.get(squidexFormValue, 'gameUrl.iv');
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
 
+        const { gameId, region, gameHash } = React.useMemo(() => {
+          if (gameUrl) {
+            const url = new URL(gameUrl);
+            const urlSections = url.split('/');
+            const gameId = urlSections[urlSections.length - 1];
+            const region = urlSections[urlSections.length - 2];
+            const params = url.searchParams;
+            const gameHash = params.get('gameHash');
+            return {
+              gameId,
+              region,
+              gameHash,
+            };
+          }
+          return {};
+        }, [gameUrl]);
+        console.log('gameId ', gameId, ' region ', region, ' gameHash ', gameHash);
         field.onInit(intializedContext => {
           setContext(intializedContext);
         });
