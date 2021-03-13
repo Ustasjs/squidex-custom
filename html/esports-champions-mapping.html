@@ -128,15 +128,12 @@
         const [formValidationError, setFormValidationError] = React.useState(null);
         const gameUrl = _.get(squidexFormValue, 'gameUrl.iv');
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
-        console.log('squidexFormValue', squidexFormValue);
-        console.log('gameUrl', gameUrl);
+
         const { gameId, region, gameHash } = React.useMemo(() => {
           if (gameUrl) {
             const urlWithouHash = gameUrl.split('#').join('');
             const url = new URL(urlWithouHash);
-            console.log('url', url);
             const urlSections = url.pathname.split('/');
-            console.log('urlSections', urlSections);
             const gameId = urlSections[urlSections.length - 1];
             const region = urlSections[urlSections.length - 2];
             const params = url.searchParams;
@@ -149,9 +146,7 @@
           }
           return {};
         }, [gameUrl]);
-        console.log('gameId', gameId,);
-        console.log('region', region,);
-        console.log('gameHash', gameHash);
+
         field.onInit(intializedContext => {
           setContext(intializedContext);
         });
@@ -159,7 +154,7 @@
         React.useEffect(() => {
           setMatchData(null);
           setMatchDataError(null);
-        }, [gameHash, gameId, region, setMatchData, setMatchDataError]);
+        }, [gameUrl, setMatchData, setMatchDataError]);
 
         const initialFormValues = React.useMemo(() => {
           if (champion2PlayerMap) {
