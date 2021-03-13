@@ -146,9 +146,9 @@
         });
         console.log('gameId', gameId);
         React.useEffect(() => {
-          if ((prevParams.gameHash && prevParams.gameHash !== gameHash)
+          if (prevParams && ((prevParams.gameHash && prevParams.gameHash !== gameHash)
             || (prevParams.gameId && prevParams.gameId !== gameId)
-            || (prevParams.region && prevParams.region !== region)) {
+            || (prevParams.region && prevParams.region !== region))) {
               console.log('prevParams.gameId', prevParams.gameId);
             setMatchData(null);
             setMatchDataError(null);
