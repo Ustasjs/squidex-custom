@@ -175,7 +175,7 @@
           if (context) {
             getPlayers(context)
               .then(parsedPlayers => {
-                setPlayersData(parsedPlayers); // todo maybe we need only one request
+                setPlayersData(parsedPlayers);
               })
               .catch(error => {
                 setMatchDataError(error.message);
@@ -211,10 +211,9 @@
         const getMatchDataCallback = React.useCallback(() => {
           if (gameId && region && context) {
             setIsMatchDataLoading(true);
-            Promise.all([getMatchData(region, gameId, gameHash), getPlayers(context)])
-              .then(([parsedMatchData, parsedPlayersData]) => {
+            getMatchData(region, gameId, gameHash)
+              .then((parsedMatchData) => {
                 setMatchData(parsedMatchData);
-                setPlayersData(parsedPlayersData);
                 setIsMatchDataLoading(false);
               })
               .catch(error => {
