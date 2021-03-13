@@ -132,7 +132,7 @@
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
 
         const usePrevious = (value) => {
-          const ref = useRef();
+          const ref = React.useRef();
           React.useEffect(() => {
             ref.current = value;
           });
