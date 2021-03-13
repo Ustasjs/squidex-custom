@@ -133,6 +133,7 @@
         const { gameId, region, gameHash } = React.useMemo(() => {
           if (gameUrl) {
             const url = new URL(gameUrl);
+            console.log('url', url);
             const urlHashSections = url.hash.split('/');
             console.log('urlHashSections', urlHashSections);
             const gameId = urlHashSections[urlHashSections.length - 1];
