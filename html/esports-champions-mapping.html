@@ -76,6 +76,7 @@
       .team-title {
         font-size: 1.2rem;
         font-weight: 600;
+        margin-bottom: 12px;
       }
 
     </style>
@@ -273,7 +274,7 @@
         return (participantsWithTeams) && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {participantsWithTeams.map((team, index) => (
-              <div>
+              <div key={index}>
                 <div className="team-title">{`Team ${index + 1}`}</div>
                 {team.map(({ ParticipantId, Champion }) => (
                   <div key={ParticipantId}>
