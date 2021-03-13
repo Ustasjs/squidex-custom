@@ -150,11 +150,8 @@
 
         const onSubmit = React.useCallback(data => {
           const formattedFormData = Object.values(data).map((value) => JSON.parse(value));
-          console.log('formattedFormData', formattedFormData);
           const playersSlugs = formattedFormData.map(element => element.playerSlug);
           const uniquePlayersSlugs = new Set(playersSlugs);
-          console.log('playersSlugs', playersSlugs);
-          console.log('uniquePlayersSlugs', uniquePlayersSlugs);
           if (uniquePlayersSlugs.size < playersSlugs.length) {
             setFormValidationError('Players should be unique');
             return;
