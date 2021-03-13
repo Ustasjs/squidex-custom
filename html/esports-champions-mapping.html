@@ -149,7 +149,7 @@
         });
         const onSubmit = data => {
           console.log('data', data);
-          const formattedFormData = Object.entries(data).map(([key, value]) => ({ championSlug: key, playerSlug: value }));
+          const formattedFormData = Object.values(data).map((value) => JSON.parse(value));
           const fieldValue = {
             matchData,
             champion2PlayerMap: formattedFormData,
@@ -286,9 +286,12 @@
                         </span>
                         <select defaultValue={PLACEHOLDER_VALUE} name={`${Champion.Slug}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                           <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
-                          {formattedPlayersData.map(playerSlug => (
-                            <option key={playerSlug} value={{ playerSlug, teamId: TeamId }}>{playerSlug}</option>
-                          ))}
+                          {formattedPlayersData.map(playerSlug => {
+                            const value = JSON.stringify({ playerSlug, teamId: TeamId, championSlug: Champion.Slug });
+                            return (
+                              <option key={playerSlug} value={value}>{playerSlug}</option>
+                            )
+                          })}
                         </select>
                       </div>
                       {errors[Champion.Slug] && <div className="error form-error">This field is required</div>}
