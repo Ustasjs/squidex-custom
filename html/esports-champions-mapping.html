@@ -276,7 +276,7 @@
             {participantsWithTeams.map((team, index) => (
               <div key={index}>
                 <div className="team-title">{`Team ${index + 1}`}</div>
-                {team.map(({ ParticipantId, Champion }) => (
+                {team.map(({ ParticipantId, Champion, TeamId }) => (
                   <div key={ParticipantId}>
                     <div className="form-element">
                       <div className="flex-wrapper">
@@ -287,7 +287,7 @@
                         <select defaultValue={PLACEHOLDER_VALUE} name={`${Champion.Slug}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                           <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
                           {formattedPlayersData.map(playerSlug => (
-                            <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
+                            <option key={playerSlug} value={{ playerSlug, teamId: TeamId }}>{playerSlug}</option>
                           ))}
                         </select>
                       </div>
