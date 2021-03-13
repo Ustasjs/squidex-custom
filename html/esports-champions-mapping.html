@@ -250,7 +250,7 @@
               {initialFormValues.map((team, index) => (
                 <div>
                   <div className="team-title">{`Team ${index + 1}`}</div>
-                  {initialFormteamValues.map((participant) => (
+                  {team.map((participant) => (
                     <div className="flex-wrapper" key={participant.playerSlug}>
                       <span className="flex-wrapper">
                         <img src={championImage(participant.championSlug)} className="champion-data_icon"/>
