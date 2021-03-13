@@ -130,7 +130,7 @@
         const gameId = _.get(squidexFormValue, 'gameId.iv');
         const region = _.get(squidexFormValue, 'region.iv');
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
-
+        console.log('squidexFormValue', squidexFormValue);
         field.onInit(intializedContext => {
           setContext(intializedContext);
         });
