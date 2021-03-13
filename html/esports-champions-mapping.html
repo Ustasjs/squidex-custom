@@ -134,6 +134,7 @@
           if (gameUrl) {
             const url = new URL(gameUrl);
             const urlSections = url.pathname.split('/');
+            console.log('urlSections', urlSections);
             const gameId = urlSections[urlSections.length - 1];
             const region = urlSections[urlSections.length - 2];
             const params = url.searchParams;
@@ -146,7 +147,9 @@
           }
           return {};
         }, [gameUrl]);
-        console.log('gameId ', gameId, ' region ', region, ' gameHash ', gameHash);
+        console.log('gameId', gameId,);
+        console.log('region', region,);
+        console.log('gameHash', gameHash);
         field.onInit(intializedContext => {
           setContext(intializedContext);
         });
