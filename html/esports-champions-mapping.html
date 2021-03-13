@@ -56,7 +56,7 @@
       .form-error {
         position: absolute;
         left: 0;
-        top: 23px;
+        top: 40px;
       }
 
       .flex-wrapper {
@@ -149,9 +149,9 @@
         });
 
         const onSubmit = React.useCallback(data => {
-          const dataValues = Object.values(data);
-          console.log('dataValues', dataValues);
-          const playersSlugs = dataValues.map(element => element.playerSlug);
+          const formattedFormData = Object.values(useCallback).map((value) => JSON.parse(value));
+          console.log('formattedFormData', formattedFormData);
+          const playersSlugs = formattedFormData.map(element => element.playerSlug);
           const uniquePlayersSlugs = new Set(playersSlugs);
           console.log('playersSlugs', playersSlugs);
           console.log('uniquePlayersSlugs', uniquePlayersSlugs);
@@ -162,7 +162,6 @@
             setFormValidationError(null);
           }
 
-          const formattedFormData = dataValues.map((value) => JSON.parse(value));
           const fieldValue = {
             matchData,
             champion2PlayerMap: formattedFormData,
