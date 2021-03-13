@@ -73,6 +73,11 @@
         border-radius: 50%;
       }
 
+      .team-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
     </style>
   </head>
 
@@ -86,24 +91,6 @@
         return fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
           method: 'GET',
           mode: 'cors',
-        }).then(response => {
-          return response.json();
-        })
-      }
-
-      function getChampions(participants, context) {
-        const filterValue = participants.reduce((acc, element) => {
-          if (acc === '') {
-            return `${element}`;
-          }
-          acc = `${acc}, ${element}`;
-          return acc;
-        }, '')
-        const filter = `$filter=data/riotId/iv in (${filterValue})`;
-        return fetch(`${context.apiUrl}/content/league-v1/champions-v1/?${filter}`, {
-          headers: {
-            Authorization: `Bearer ${context.user.user.access_token}`,
-          },
         }).then(response => {
           return response.json();
         })
@@ -132,7 +119,6 @@
         const [isDisabled, setIsDisabled] = React.useState(false);
         const [value, setValue] = React.useState(initialValue || undefined);
         const [context, setContext] = React.useState(null);
-        const [championsData, setChampionsData] = React.useState(null);
         const [matchData, setMatchData] = React.useState(null);
         const [playersData, setPlayersData] = React.useState(null);
         const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
@@ -161,6 +147,7 @@
           onTouched: () => squidexFormValue.touched(),
         });
         const onSubmit = data => {
+          console.log('data', data);
           const formattedFormData = Object.entries(data).map(([key, value]) => ({ championSlug: key, playerSlug: value }));
           const fieldValue = {
             matchData,
@@ -189,7 +176,7 @@
           if (context) {
             getPlayers(context)
               .then(parsedPlayers => {
-                setPlayersData(parsedPlayers);
+                setPlayersData(parsedPlayers); // todo maybe we need only one request
               })
               .catch(error => {
                 setMatchDataError(error.message);
@@ -198,12 +185,22 @@
           }
         }, [context]);
 
-        const formattedChampionsData = React.useMemo(function () {
-          if (championsData) {
-            return championsData.items.map(championData => _.get(championData, 'data.slug.iv'));
+        const championsDataGroupedByTeam = React.useMemo(function () {
+          if (matchData) {
+            const rawParticipants = _.get(matchData, 'Data.participants');
+            const championsMapping = _.get(matchData, 'Mappings');
+            const formattedChampionsData = championsMapping.map(element => {
+              const rawParticipantElement = rawParticipants.find(
+                participant =>
+                  participant.participantId === element.ParticipantId
+                  && participant.championId === element.Champion.Id
+              )
+              return { ...element, TeamId: rawParticipantElement.teamId };
+            });
+            return _.groupBy(formattedChampionsData, 'TeamId');
           }
           return null;
-        }, [championsData]);
+        }, [matchData]);
         const formattedPlayersData = React.useMemo(function () {
           if (playersData) {
             return playersData.items.map(championData => _.get(championData, 'data.slug.iv'));
@@ -218,15 +215,7 @@
               .then(([parsedMatchData, parsedPlayersData]) => {
                 setMatchData(parsedMatchData);
                 setPlayersData(parsedPlayersData);
-                const participants = _.get(parsedMatchData, 'Data.participants');
-                return participants.map(participant => participant.championId);
-              })
-              .then(participants => {
-                return getChampions(participants, context);
-              })
-              .then(parsedData => {
                 setIsMatchDataLoading(false);
-                setChampionsData(parsedData);
               })
               .catch(error => {
                 setMatchDataError(error.message);
@@ -272,33 +261,38 @@
           </div>)
         }
 
-        if (!championsData || !matchData) {
+        if (!matchData) {
           return (
             <div>
               <button onClick={getMatchDataCallback} disabled={isMatchDataLoading} type="button">Load match data</button>
               {isMatchDataLoading && <div>'loading...'</div>}
             </div>
         )}
-
-        return (formattedChampionsData) && (
+        console.log('championsDataGroupedByTeam', championsDataGroupedByTeam);
+        return (championsDataGroupedByTeam) && (
           <form onSubmit={handleSubmit(onSubmit)}>
-            {formattedChampionsData.map(champion => (
-              <div key={champion}>
-                <div className="form-element">
-                  <div className="flex-wrapper">
-                    <span  style={{ marginRight: '10px' }} className="flex-wrapper">
-                    <img src={championImage(champion)} className="champion-data_icon"/>
-                    <span>{champion}</span>
-                    </span>
-                    <select defaultValue={PLACEHOLDER_VALUE} name={`${champion}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
-                      <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
-                      {formattedPlayersData.map(playerSlug => (
-                        <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
-                      ))}
-                    </select>
+            {championsDataGroupedByTeam.map((team, index) => (
+              <div>
+                <div className="team-title">{`Team ${index + 1}`}</div>
+                {team.map(({ ParticipantId, Champion }) => (
+                  <div key={ParticipantId}>
+                    <div className="form-element">
+                      <div className="flex-wrapper">
+                        <span  style={{ marginRight: '10px' }} className="flex-wrapper">
+                        <img src={championImage(Champion.Slug)} className="champion-data_icon"/>
+                        <span>{Champion.Name}</span>
+                        </span>
+                        <select defaultValue={PLACEHOLDER_VALUE} name={`${Champion.Slug}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
+                          <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
+                          {formattedPlayersData.map(playerSlug => (
+                            <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
+                          ))}
+                        </select>
+                      </div>
+                      {errors[Champion.Slug] && <div className="error form-error">This field is required</div>}
+                    </div>
                   </div>
-                  {errors[champion] && <div className="error form-error">This field is required</div>}
-                </div>
+                ))}
               </div>
             ))}
             
