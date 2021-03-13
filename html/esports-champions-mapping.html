@@ -150,6 +150,7 @@
 
         const onSubmit = React.useCallback(data => {
           const dataValues = Object.values(data);
+          console.log('dataValues', dataValues);
           const playersSlugs = dataValues.map(element => element.playerSlug);
           const uniquePlayersSlugs = new Set(playersSlugs);
           console.log('playersSlugs', playersSlugs);
