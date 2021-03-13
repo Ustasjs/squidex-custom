@@ -138,7 +138,7 @@
         React.useEffect(function () {
           setMatchData(null);
           setMatchDataError(null);
-        }, [gameHash, gameId, region]);
+        }, [gameHash, gameId, region, setMatchData, setMatchDataError]);
 
         const initialFormValues = React.useMemo(() => {
           if (champion2PlayerMap) {
