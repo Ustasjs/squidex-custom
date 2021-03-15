@@ -134,7 +134,7 @@
             const urlWithouHash = gameUrl.split('#').join('');
             const url = new URL(urlWithouHash);
             const urlSections = url.pathname.split('/');
-            const matchDetailsIndex = urlSections.findIndex(element => element ==="match-details");
+            const matchDetailsIndex = urlSections.findIndex(element => element === "match-details");
             const region = urlSections[matchDetailsIndex + 1];
             const gameId = urlSections[matchDetailsIndex + 2];
             const params = url.searchParams;
