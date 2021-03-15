@@ -89,7 +89,7 @@
       const field = new SquidexFormField();
 
       function getMatchData(region, gameId, gameHash) {
-        return fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `?hash=${gameHash}` : ''}`, {
+        return fetch(`https://esports.int.mobalytics.gg/api/YFFqpzF7QXbsunj6VyXtn8vxPtY3N6/v1/esports/matches/${region}/${gameId}${gameHash ? `/${gameHash}` : ''}`, {
           method: 'GET',
           mode: 'cors',
         }).then(response => {
