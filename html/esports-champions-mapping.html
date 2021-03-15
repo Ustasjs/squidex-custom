@@ -237,7 +237,9 @@
         }, [matchData]);
         const formattedPlayersData = React.useMemo(function () {
           if (playersData) {
-            return playersData.items.map(championData => _.get(championData, 'data.slug.iv'));
+            const playersSlugs = playersData.items.map(championData => _.get(championData, 'data.slug.iv'));
+            playersSlugs.sort();
+            return playersSlugs;
           }
           return null;
         }, [playersData]);
