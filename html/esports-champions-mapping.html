@@ -385,8 +385,7 @@
               {isMatchDataLoading && <div>loading...</div>}
             </div>
         )}
-        console.log('championsDataMap', championsDataMap);
-        console.log('participantsWithTeams', participantsWithTeams);
+
         return formattedPlayersData && participantsWithTeams && teamsData && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {participantsWithTeams.map((team, index) => (
@@ -414,7 +413,11 @@
                         <img src={championImage(Champion.Slug)} className="champion-data_icon"/>
                         <span>{Champion.Name}</span>
                         </span>
-                        <select defaultValue={(championsDataMap && championsDataMap[Champion.Slug]) ? JSON.stringify(championsDataMap[Champion.Slug]) : PLACEHOLDER_VALUE} name={`${Champion.Slug}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
+                        <select
+                          defaultValue={(championsDataMap && championsDataMap[Champion.Slug]) ? JSON.stringify(championsDataMap[Champion.Slug]) : PLACEHOLDER_VALUE}
+                          name={`${Champion.Slug}`}
+                          ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}
+                        >
                           <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select a player -- </option>
                           {formattedPlayersData.map(playerSlug => {
                             const value = JSON.stringify({ playerSlug, playerId: ParticipantId, teamId: TeamId, championSlug: Champion.Slug, championId: Champion.Id });
