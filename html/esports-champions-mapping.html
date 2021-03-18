@@ -107,6 +107,18 @@
         })
       }
 
+      function getTeams(context) {
+        console.log('context.id', context.id);
+        return fetch(`${context.apiUrl}/content/esports-v1/esports-series-v1/?$filter=data/games/iv eq ${context.id}`, {
+          headers: {
+            Authorization: `Bearer ${context.user.user.access_token}`,
+          },
+        }).then(response => {
+          return response.json();
+        })
+        .then(data => console.log('teams data'))
+      }
+
       function championImage(slug) {
         return `https://storage.googleapis.com/cdn.mobalytics.gg/assets/lol/images/dd/champions/icons/${slug.toLowerCase()}.png`;
       }
@@ -208,8 +220,12 @@
 
         React.useEffect(function () {
           if (context) {
-            getPlayers(context)
-              .then(parsedPlayers => {
+            Promise.all([
+              getTeams(context),
+              getPlayers(context)
+            ])
+              .then(responce => {
+                [null, parsedPlayers] = responce;
                 setPlayersData(parsedPlayers);
               })
               .catch(error => {
