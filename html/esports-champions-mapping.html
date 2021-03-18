@@ -111,7 +111,7 @@
         console.log('context', context);
         console.log('context.initialContent.id', context.initialContent.id);
         console.log('context.initialContent.data.slug.iv', context.initialContent.data.slug.iv);
-        return fetch(`${context.apiUrl}/content/esports-v1/esports-series-v1/?$filter=data/games/iv eq ${context.initialContent.data.slug.iv}`, {
+        return fetch(`${context.apiUrl}/content/esports-v1/esports-series-v1/?$filter=data/games/iv eq ${context.initialContent.id}`, {
           headers: {
             Authorization: `Bearer ${context.user.user.access_token}`,
           },
