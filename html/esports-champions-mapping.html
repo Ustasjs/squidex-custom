@@ -208,12 +208,10 @@
             const data = Object.values(champion2PlayerMap);
             const team2ParticipantMap = _.groupBy(data, 'teamId');
             const championsDataMap = champion2PlayerMap.reduce((acc, element) => {
-              const teamsMap = teams.reduce((acc, element) => {
-                if (!acc[element.championSlug]) {
-                  acc[element.championSlug] = element;
-                }
-                return acc
-              }, {})
+              if (!acc[element.championSlug]) {
+                acc[element.championSlug] = element;
+              }
+              return acc
             }, {});
             return { initialFormValues: Object.values(team2ParticipantMap), championsDataMap }
           }
