@@ -349,12 +349,12 @@
           </div>)
         }
 
-        if (initialFormValues && teamsMap) {
+        if (initialFormValues) {
           return (<div>
             <div className="form-element">
               {initialFormValues.map((team, index) => (
                 <div style={{ marginBottom: index === 0 ? '10px' : undefined }} key={index}>
-                  <div className="team-title">{`Team ${teamsMap[team[0].teamId].teamName}`}</div>
+                  <div className="team-title">{`Team ${teamsMap ? teamsMap[team[0].teamId].teamName : index + 1}`}</div>
                   {team.map((participant) => (
                     <div className="flex-wrapper" key={participant.playerSlug}>
                       <span className="flex-wrapper">
