@@ -173,8 +173,7 @@
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
         const teamsMap = _.get(squidexFormValue, 'matchDataMaping.iv.teamsMap');
         const savedMatchData = _.get(squidexFormValue, 'matchDataMaping.iv.matchData');
-        console.log('savedMatchData', savedMatchData);
-        console.log('champion2PlayerMap', champion2PlayerMap);
+
         const { gameId, region, gameHash } = React.useMemo(() => {
           if (gameUrl) {
             const urlWithouHash = gameUrl.split('#').join('');
@@ -224,7 +223,6 @@
 
         const onSubmit = React.useCallback(data => {
           const formattedFormData = Object.values(data).map((value) => JSON.parse(value));
-          console.log('formattedFormData', formattedFormData);
           const teams = formattedFormData.filter(element => element.teamSlug);
           const teamsMap = teams.reduce((acc, element) => {
             if (!acc[element.teamId]) {
@@ -233,9 +231,6 @@
             return acc
           }, {})
           const players = formattedFormData.filter(element => element.playerSlug);
-          console.log('teams', teams);
-          console.log('teamsMap', teamsMap);
-          console.log('players', players);
           const playersSlugs = players.map(element => element.playerSlug);
           const uniquePlayersSlugs = new Set(playersSlugs);
           const teamsSlugs = teams.map(element => element.teamSlug);
