@@ -377,7 +377,8 @@
             <div>{matchDataError}</div>
           </div>)
         }
-
+        console.log('initialFormValues', initialFormValues);
+        console.log('teamsMap', teamsMap);
         if (initialFormValues && teamsMap) {
           return (<div>
             <div className="form-element">
@@ -409,7 +410,7 @@
               {isMatchDataLoading && <div>loading...</div>}
             </div>
         )}
-        console.log('champion2ParticipantMap', champion2ParticipantMap);
+
         return formattedPlayersData && participantsWithTeams && teamsData && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {participantsWithTeams.map((team, index) => (
