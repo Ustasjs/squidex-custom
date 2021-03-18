@@ -367,7 +367,7 @@
                     <select defaultValue={PLACEHOLDER_VALUE} name={`${team[0].TeamId}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                       <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select a team -- </option>
                       {teamsData.map(teamData => {
-                        const value = JSON.stringify({ teamSlug: teamData.slug.iv, teamImageSlug: imageSlug.name.iv, teamId: team[0].TeamId, teamName: teamData.name.iv });
+                        const value = JSON.stringify({ teamSlug: teamData.slug.iv, teamImageSlug: teamData.imageSlug.name.iv, teamId: team[0].TeamId, teamName: teamData.name.iv });
                         const title = teamData.name.iv;
                         return (
                           <option key={value} value={value}>{title}</option>
