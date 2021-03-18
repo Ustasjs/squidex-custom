@@ -108,7 +108,6 @@
       }
 
       function getTeams(context) {
-        console.log('context', context);
         return fetch(`${context.apiUrl}/content/esports-v1/esports-series-v1/?$filter=data/games/iv eq '${context.initialContent.id}'`, {
           headers: {
             Authorization: `Bearer ${context.user.user.access_token}`,
@@ -117,7 +116,6 @@
           return response.json();
         })
         .then(parsedData => {
-          console.log('parsedData', parsedData);
           const teamsIds = _.get(parsedData, 'items[0]data.teams.iv');
           const teamsIdsQuery = teamsIds && teamsIds.reduce((acc, element) => {
             if (acc === '') {
@@ -126,7 +124,6 @@
             acc = `${acc}, '${element}'`;
             return acc;
           }, "")
-          console.log('teamsIdsQuery', teamsIdsQuery);
           return fetch(`${context.apiUrl}/content/esports-v1/esports-teams-v1/?$filter=id in (${teamsIdsQuery})`, {
             headers: {
               Authorization: `Bearer ${context.user.user.access_token}`,
@@ -137,7 +134,7 @@
           return response.json();
         })
         .then(parsedTeamsData => {
-          console.log('parsedTeamsData', parsedTeamsData);
+          return parsedTeamsData.items.map(it => it.data)
         })
       }
 
@@ -156,6 +153,7 @@
         const [context, setContext] = React.useState(null);
         const [matchData, setMatchData] = React.useState(null);
         const [playersData, setPlayersData] = React.useState(null);
+        const [teamsData, setTeamsData] = React.useState(null);
         const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
         const [matchDataError, setMatchDataError] = React.useState(null);
         const [showSaveTableMessage, setShowSaveTableMessage] = React.useState(false);
@@ -247,7 +245,9 @@
               getPlayers(context)
             ])
               .then(responce => {
+                const parsedTeams = responce[0];
                 const parsedPlayers = responce[1];
+                setTeamsData(parsedTeams);
                 setPlayersData(parsedPlayers);
               })
               .catch(error => {
@@ -349,7 +349,7 @@
               {isMatchDataLoading && <div>loading...</div>}
             </div>
         )}
-
+        console.log('participantsWithTeams', participantsWithTeams);
         return (participantsWithTeams) && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {participantsWithTeams.map((team, index) => (
