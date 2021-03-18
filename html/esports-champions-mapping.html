@@ -226,7 +226,7 @@
           const teams = formattedFormData.map(element => {
             const teamId = element[0];
             const teamSlug = element[0];
-            const teamInfo = teamData.find(team => team.slug.iv === teamSlug);
+            const teamInfo = teamsData.find(team => team.slug.iv === teamSlug);
             if (teamInfo) {
               return { teamSlug, teamId, teamName: teamInfo.name.iv }
             }
@@ -272,7 +272,7 @@
           field.valueChanged(fieldValue);
           setShowSaveTableMessage(true);
           console.log('fieldValue', fieldValue);
-        }, [matchData, savedMatchData, champion2ParticipantMap, teamData, setFormValidationError, setShowSaveTableMessage])
+        }, [matchData, savedMatchData, champion2ParticipantMap, teamsData, setFormValidationError, setShowSaveTableMessage])
 
         React.useEffect(function () {
           field.onDisabled(function (disabled) {
