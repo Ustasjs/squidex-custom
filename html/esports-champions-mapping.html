@@ -248,13 +248,13 @@
 
           const fieldValue = {
             teamsMap,
-            matchData,
+            matchData: matchData || savedMatchData,
             champion2PlayerMap: players,
           }
           field.valueChanged(fieldValue);
           setShowSaveTableMessage(true);
           console.log('fieldValue', fieldValue);
-        }, [matchData, setFormValidationError, setShowSaveTableMessage])
+        }, [matchData, savedMatchData, setFormValidationError, setShowSaveTableMessage])
 
         React.useEffect(function () {
           field.onDisabled(function (disabled) {
