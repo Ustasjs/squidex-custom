@@ -225,7 +225,7 @@
               getPlayers(context)
             ])
               .then(responce => {
-                [null, parsedPlayers] = responce;
+                parsedPlayers = responce[1];
                 setPlayersData(parsedPlayers);
               })
               .catch(error => {
