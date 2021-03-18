@@ -119,8 +119,15 @@
         .then(parsedData => {
           console.log('parsedData', parsedData);
           const teamsIds = _.get(parsedData, 'items[0]data.teams.iv');
-          console.log('teamsIds', teamsIds);
-          return fetch(`${context.apiUrl}/content/esports-v1/esports-teams-v1/?$filter=id in (${teamsIds})`, {
+          const teamsIdsQuery = teamsIds && teamsIds.reduce((acc, element) => {
+            if (acc === '') {
+              return `${element}`;
+            }
+            acc = `${acc}, ${element}`;
+            return acc;
+          }, "")
+          console.log('teamsIdsQuery', teamsIdsQuery);
+          return fetch(`${context.apiUrl}/content/esports-v1/esports-teams-v1/?$filter=id in (${teamsIdsQuery})`, {
             headers: {
               Authorization: `Bearer ${context.user.user.access_token}`,
             },
