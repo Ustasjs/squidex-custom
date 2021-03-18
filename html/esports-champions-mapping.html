@@ -202,6 +202,7 @@
 
         const initialFormValues = React.useMemo(() => {
           if (champion2PlayerMap) {
+            console.log('champion2PlayerMap', champion2PlayerMap);
             const data = Object.values(champion2PlayerMap);
             const team2ParticipantMap = _.groupBy(data, 'teamId');
             return Object.values(team2ParticipantMap)
@@ -346,7 +347,7 @@
             <div>{matchDataError}</div>
           </div>)
         }
-
+        console.log('initialFormValues', initialFormValues);
         if (initialFormValues) {
           return (<div>
             <div className="form-element">
