@@ -225,7 +225,7 @@
               getPlayers(context)
             ])
               .then(responce => {
-                parsedPlayers = responce[1];
+                const parsedPlayers = responce[1];
                 setPlayersData(parsedPlayers);
               })
               .catch(error => {
