@@ -382,7 +382,7 @@
           </div>)
         }
 
-        if (!matchData || !savedMatchData) {
+        if (!matchData && !savedMatchData) {
           return (
             <div>
               <button onClick={getMatchDataCallback} disabled={isMatchDataLoading} type="button">Load match data</button>
