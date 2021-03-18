@@ -291,7 +291,7 @@
           }
         }, [context, setPlayersData, setMatchDataError]);
 
-        const { participantsWithTeams, player2ParticipantMap } = React.useMemo(function () {
+        const { participantsWithTeams, champion2ParticipantMap } = React.useMemo(function () {
           const resultMatchData = matchData || savedMatchData;
           if (resultMatchData) {
             const rawParticipants = _.get(resultMatchData, 'Data.participants');
@@ -305,16 +305,16 @@
               )
               return { ...element, TeamId: rawParticipantElement.teamId };
             });
-            const player2ParticipantMap = formattedChampionsData.reduce((acc, element) => {
-              if (!acc[element.ParticipantId]) {
-                acc[element.ParticipantId] = element;
+            const champion2ParticipantMap = formattedChampionsData.reduce((acc, element) => {
+              if (!acc[element.Champion.Slug]) {
+                acc[element.Champion.Slug] = element;
               }
               return acc
             }, {})
             const team2ParticipantMap = _.groupBy(formattedChampionsData, 'TeamId');
-            return { participantsWithTeams: Object.values(team2ParticipantMap), player2ParticipantMap };
+            return { participantsWithTeams: Object.values(team2ParticipantMap), champion2ParticipantMap };
           }
-          return { participantsWithTeams: null, player2ParticipantMap: null };
+          return { participantsWithTeams: null, champion2ParticipantMap: null };
         }, [matchData, savedMatchData]);
         const formattedPlayersData = React.useMemo(function () {
           if (playersData) {
@@ -391,7 +391,7 @@
               {isMatchDataLoading && <div>loading...</div>}
             </div>
         )}
-        console.log('player2ParticipantMap', player2ParticipantMap);
+        console.log('champion2ParticipantMap', champion2ParticipantMap);
         return formattedPlayersData && participantsWithTeams && teamsData && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {participantsWithTeams.map((team, index) => (
