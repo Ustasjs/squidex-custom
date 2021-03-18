@@ -218,10 +218,10 @@
           console.log('formattedFormData', formattedFormData);
           const teams = formattedFormData.filter(element => element.teamSlug);
           const teamsMap = teams.reduce((acc, element) => {
-            if (acc[element.teamId]) {
-              return acc;
+            if (!acc[element.teamId]) {
+              acc[element.teamId] = element;
             }
-            acc[element.teamId] = element;
+            return acc
           }, {})
           const players = formattedFormData.filter(element => element.teamSlug);
           console.log('teams', teams);
