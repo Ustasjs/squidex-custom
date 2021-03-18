@@ -203,13 +203,21 @@
           setMatchDataError(null);
         }, [gameUrl, setMatchData, setMatchDataError]);
 
-        const initialFormValues = React.useMemo(() => {
+        const { initialFormValues, championsDataMap } = React.useMemo(() => {
           if (champion2PlayerMap) {
             const data = Object.values(champion2PlayerMap);
             const team2ParticipantMap = _.groupBy(data, 'teamId');
-            return Object.values(team2ParticipantMap)
+            const championsDataMap = champion2PlayerMap.reduce((acc, element) => {
+              const teamsMap = teams.reduce((acc, element) => {
+                if (!acc[element.championSlug]) {
+                  acc[element.championSlug] = element;
+                }
+                return acc
+              }, {})
+            }, {});
+            return { initialFormValues: Object.values(team2ParticipantMap), championsDataMap }
           }
-          return null;
+          return { initialFormValues: null, championsDataMap: null };
         }, [champion2PlayerMap])
 
         const { register, handleSubmit, errors, control } = ReactHookForm.useForm({
@@ -291,9 +299,10 @@
         }, [context, setPlayersData, setMatchDataError]);
 
         const participantsWithTeams = React.useMemo(function () {
-          if (matchData) {
-            const rawParticipants = _.get(matchData, 'Data.participants');
-            const championsMapping = _.get(matchData, 'Mappings');
+          const resultMatchData = matchData || savedMatchData;
+          if (resultMatchData) {
+            const rawParticipants = _.get(resultMatchData, 'Data.participants');
+            const championsMapping = _.get(resultMatchData, 'Mappings');
             const formattedChampionsData = championsMapping.map(element => {
               const rawParticipantElement = rawParticipants.find(
                 participant =>
@@ -306,7 +315,7 @@
             return Object.values(team2ParticipantMap);
           }
           return null;
-        }, [matchData]);
+        }, [matchData, savedMatchData]);
         const formattedPlayersData = React.useMemo(function () {
           if (playersData) {
             const playersSlugs = playersData.items.map(championData => _.get(championData, 'data.slug.iv'));
@@ -351,12 +360,12 @@
           </div>)
         }
 
-        if (initialFormValues) {
+        if (initialFormValues && teamsMap) {
           return (<div>
             <div className="form-element">
               {initialFormValues.map((team, index) => (
                 <div style={{ marginBottom: index === 0 ? '10px' : undefined }} key={index}>
-                  <div className="team-title">{`Team ${teamsMap ? teamsMap[team[0].teamId].teamName : index + 1}`}</div>
+                  <div className="team-title">{`Team ${teamsMap[team[0].teamId].teamName}`}</div>
                   {team.map((participant) => (
                     <div className="flex-wrapper" key={participant.playerSlug}>
                       <span className="flex-wrapper">
@@ -410,7 +419,7 @@
                         <img src={championImage(Champion.Slug)} className="champion-data_icon"/>
                         <span>{Champion.Name}</span>
                         </span>
-                        <select defaultValue={PLACEHOLDER_VALUE} name={`${Champion.Slug}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
+                        <select defaultValue={championsDataMapp[Champion.Slug] || PLACEHOLDER_VALUE} name={`${Champion.Slug}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                           <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select a player -- </option>
                           {formattedPlayersData.map(playerSlug => {
                             const value = JSON.stringify({ playerSlug, playerId: ParticipantId, teamId: TeamId, championSlug: Champion.Slug, championId: Champion.Id });
