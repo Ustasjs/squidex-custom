@@ -155,16 +155,20 @@
         const squidexFormValue = field.getFormValue();
         const initialValue = _.get(squidexFormValue, 'matchDataMaping.iv');
 
+        // editor state
         const [isDisabled, setIsDisabled] = React.useState(false);
         const [value, setValue] = React.useState(initialValue || undefined);
         const [context, setContext] = React.useState(null);
+        // data state
         const [matchData, setMatchData] = React.useState(null);
         const [playersData, setPlayersData] = React.useState(null);
         const [teamsData, setTeamsData] = React.useState(null);
         const [isMatchDataLoading, setIsMatchDataLoading] = React.useState(false);
         const [matchDataError, setMatchDataError] = React.useState(null);
+        // form state
         const [showSaveTableMessage, setShowSaveTableMessage] = React.useState(false);
         const [formValidationError, setFormValidationError] = React.useState(null);
+
         const gameUrl = _.get(squidexFormValue, 'gameUrl.iv');
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
 
@@ -210,11 +214,27 @@
         });
 
         const onSubmit = React.useCallback(data => {
-          console.log('onSubmit data', data);
           const formattedFormData = Object.values(data).map((value) => JSON.parse(value));
           console.log('formattedFormData', formattedFormData);
-          const playersSlugs = formattedFormData.map(element => element.playerSlug).filter(value => value);
+          const teams = formattedFormData.filter(element => element.teamSlug);
+          const teamsMap = teams.reduce((acc, element) => {
+            if (acc[element.teamId]) {
+              return acc;
+            }
+            acc[element.teamId] = element;
+          }, {})
+          const players = formattedFormData.filter(element => element.teamSlug);
+          console.log('teams', teams);
+          console.log('teamsMap', teamsMap);
+          console.log('players', players);
+          const playersSlugs = players.map(element => element.playerSlug);
           const uniquePlayersSlugs = new Set(playersSlugs);
+          const teamsSlugs = teams.map(element => element.teamSlug);
+          const uniqueTeamsSlugs = new Set(playersSlugs);
+          if (uniqueTeamsSlugs.size < teamsSlugs.length) {
+            setFormValidationError('Teams should be unique');
+            return;
+          } 
           if (uniquePlayersSlugs.size < playersSlugs.length) {
             setFormValidationError('Players should be unique');
             return;
