@@ -232,7 +232,6 @@
             }
             return null;
           }).filter(value => value);
-          console.log('teams', teams);
           const teamsMap = teams.reduce((acc, element) => {
             if (!acc[element.teamId]) {
               acc[element.teamId] = element;
@@ -378,8 +377,7 @@
             <div>{matchDataError}</div>
           </div>)
         }
-        console.log('initialFormValues', initialFormValues);
-        console.log('teamsMap', teamsMap);
+
         if (initialFormValues && teamsMap) {
           return (<div>
             <div className="form-element">
