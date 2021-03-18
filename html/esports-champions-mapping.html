@@ -388,10 +388,8 @@
               {isMatchDataLoading && <div>loading...</div>}
             </div>
         )}
-        console.log('participantsWithTeams', participantsWithTeams);
-        console.log('teamsData', teamsData);
-        console.log('formattedPlayersData', formattedPlayersData);
-        return participantsWithTeams && teamsData && (
+
+        return formattedPlayersData && participantsWithTeams && teamsData && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {participantsWithTeams.map((team, index) => (
               <div style={{ marginBottom: index === 0 ? '10px' : undefined }} key={index}>
