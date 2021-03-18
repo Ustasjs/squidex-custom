@@ -223,14 +223,14 @@
             }
             return acc
           }, {})
-          const players = formattedFormData.filter(element => element.teamSlug);
+          const players = formattedFormData.filter(element => element.playerSlug);
           console.log('teams', teams);
           console.log('teamsMap', teamsMap);
           console.log('players', players);
           const playersSlugs = players.map(element => element.playerSlug);
           const uniquePlayersSlugs = new Set(playersSlugs);
           const teamsSlugs = teams.map(element => element.teamSlug);
-          const uniqueTeamsSlugs = new Set(playersSlugs);
+          const uniqueTeamsSlugs = new Set(teamsSlugs);
           if (uniqueTeamsSlugs.size < teamsSlugs.length) {
             setFormValidationError('Teams should be unique');
             return;
