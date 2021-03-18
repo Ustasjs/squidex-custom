@@ -76,7 +76,12 @@
       .team-title {
         font-size: 1.2rem;
         font-weight: 600;
+        margin-right: 12px;
+      }
+
+      .team-wrapper {
         margin-bottom: 12px;
+        border-bottom: 1px solid black;
       }
 
     </style>
@@ -355,7 +360,7 @@
             {participantsWithTeams.map((team, index) => (
               <div style={{ marginBottom: index === 0 ? '10px' : undefined }} key={index}>
                 <div className="form-element">
-                  <div className="flex-wrapper">
+                  <div className="flex-wrapper team-wrapper">
                     <div className="team-title">{`Team ${index + 1}`}</div>
                     <select defaultValue={PLACEHOLDER_VALUE} name={`${team[0].TeamId}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                       <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
