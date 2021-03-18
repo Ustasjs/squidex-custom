@@ -171,6 +171,7 @@
 
         const gameUrl = _.get(squidexFormValue, 'gameUrl.iv');
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
+        const teamsMap = _.get(squidexFormValue, 'matchDataMaping.iv.teamsMap');
 
         const { gameId, region, gameHash } = React.useMemo(() => {
           if (gameUrl) {
@@ -202,7 +203,6 @@
 
         const initialFormValues = React.useMemo(() => {
           if (champion2PlayerMap) {
-            console.log('champion2PlayerMap', champion2PlayerMap);
             const data = Object.values(champion2PlayerMap);
             const team2ParticipantMap = _.groupBy(data, 'teamId');
             return Object.values(team2ParticipantMap)
@@ -244,8 +244,9 @@
           }
 
           const fieldValue = {
+            teamsMap,
             matchData,
-            champion2PlayerMap: formattedFormData,
+            champion2PlayerMap: players,
           }
           field.valueChanged(fieldValue);
           setShowSaveTableMessage(true);
@@ -347,13 +348,13 @@
             <div>{matchDataError}</div>
           </div>)
         }
-        console.log('initialFormValues', initialFormValues);
-        if (initialFormValues) {
+
+        if (initialFormValues && teamsMap) {
           return (<div>
             <div className="form-element">
               {initialFormValues.map((team, index) => (
                 <div style={{ marginBottom: index === 0 ? '10px' : undefined }} key={index}>
-                  <div className="team-title">{`Team ${index + 1}`}</div>
+                  <div className="team-title">{`Team ${teamsMap[team[0].teamName]}`}</div>
                   {team.map((participant) => (
                     <div className="flex-wrapper" key={participant.playerSlug}>
                       <span className="flex-wrapper">
