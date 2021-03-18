@@ -120,7 +120,7 @@
           console.log('parsedData', parsedData);
           const teamsIds = _.get(parsedData, 'items[0]data.teams.iv');
           console.log('teamsIds', teamsIds);
-          return fetch(`${context.apiUrl}/content/esports-v1/esports-teams-v1/?$filter=id in ${teamsIds}`, {
+          return fetch(`${context.apiUrl}/content/esports-v1/esports-teams-v1/?$filter=id in (${teamsIds})`, {
             headers: {
               Authorization: `Bearer ${context.user.user.access_token}`,
             },
