@@ -350,11 +350,25 @@
             </div>
         )}
         console.log('participantsWithTeams', participantsWithTeams);
-        return (participantsWithTeams) && (
+        return participantsWithTeams && teamsData && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {participantsWithTeams.map((team, index) => (
               <div style={{ marginBottom: index === 0 ? '10px' : undefined }} key={index}>
-                <div className="team-title">{`Team ${index + 1}`}</div>
+                <div className="form-element">
+                  <div className="flex-wrapper">
+                    <div className="team-title">{`Team ${index + 1}`}</div>
+                    <select defaultValue={PLACEHOLDER_VALUE} name={`${team[0].TeamId}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
+                      <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
+                      {teamsData.map(teamData => {
+                        const value = teamData.slug.iv;
+                        const title = teamData.name.iv;
+                        return (
+                          <option key={value} value={value}>{title}</option>
+                        )
+                      })}
+                    </select>
+                  </div>
+                </div>
                 {team.map(({ ParticipantId, Champion, TeamId }) => (
                   <div key={ParticipantId}>
                     <div className="form-element">
