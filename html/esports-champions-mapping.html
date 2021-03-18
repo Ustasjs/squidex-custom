@@ -173,7 +173,7 @@
         const champion2PlayerMap = _.get(squidexFormValue, 'matchDataMaping.iv.champion2PlayerMap');
         const teamsMap = _.get(squidexFormValue, 'matchDataMaping.iv.teamsMap');
         const savedMatchData = _.get(squidexFormValue, 'matchDataMaping.iv.matchData');
-
+        console.log('squidexFormValue', squidexFormValue);
         const { gameId, region, gameHash } = React.useMemo(() => {
           if (gameUrl) {
             const urlWithouHash = gameUrl.split('#').join('');
