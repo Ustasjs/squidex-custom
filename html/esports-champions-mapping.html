@@ -314,7 +314,7 @@
             const team2ParticipantMap = _.groupBy(formattedChampionsData, 'TeamId');
             return { participantsWithTeams: Object.values(team2ParticipantMap), player2ParticipantMap };
           }
-          return null;
+          return { participantsWithTeams: null, player2ParticipantMap: null };
         }, [matchData, savedMatchData]);
         const formattedPlayersData = React.useMemo(function () {
           if (playersData) {
