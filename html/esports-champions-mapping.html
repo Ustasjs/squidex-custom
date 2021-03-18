@@ -118,7 +118,21 @@
         }).then(response => {
           return response.json();
         })
-        .then(data => console.log('teams data'))
+        .then(parsedData => {
+          const teamsIds = _.get(parsedData, 'data.teams.iv');
+          console.log('teamsIds', teamsIds);
+          return fetch(`${context.apiUrl}/content/esports-v1/esports-teams-v1/?$filter=id in ${teamsIds}`, {
+            headers: {
+              Authorization: `Bearer ${context.user.user.access_token}`,
+            },
+          })
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(parsedTeamsData => {
+          console.log('parsedTeamsData', parsedTeamsData);
+        })
       }
 
       function championImage(slug) {
