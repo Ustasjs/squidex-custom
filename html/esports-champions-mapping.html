@@ -109,7 +109,7 @@
 
       function getTeams(context) {
         console.log('context', context);
-        return fetch(`${context.apiUrl}/content/esports-v1/esports-series-v1/?$filter=data/games/iv eq ${context.id}`, {
+        return fetch(`${context.apiUrl}/content/esports-v1/esports-series-v1/?$filter=data/games/iv eq ${context.initialContent.id}`, {
           headers: {
             Authorization: `Bearer ${context.user.user.access_token}`,
           },
