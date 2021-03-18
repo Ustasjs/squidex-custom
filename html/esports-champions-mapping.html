@@ -301,6 +301,9 @@
           if (resultMatchData) {
             const rawParticipants = _.get(resultMatchData, 'Data.participants');
             const championsMapping = _.get(resultMatchData, 'Mappings');
+            console.log('championsMapping', championsMapping);
+            console.log('resultMatchData', resultMatchData);
+
             const formattedChampionsData = championsMapping.map(element => {
               const rawParticipantElement = rawParticipants.find(
                 participant =>
