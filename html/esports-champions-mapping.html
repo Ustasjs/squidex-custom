@@ -80,7 +80,7 @@
       }
 
       .team-wrapper {
-        margin-bottom: 12px;
+        padding-bottom: 12px;
         border-bottom: 1px solid black;
       }
 
@@ -208,6 +208,7 @@
         });
 
         const onSubmit = React.useCallback(data => {
+          console.log('onSubmit data', data);
           const formattedFormData = Object.values(data).map((value) => JSON.parse(value));
           const playersSlugs = formattedFormData.map(element => element.playerSlug);
           const uniquePlayersSlugs = new Set(playersSlugs);
@@ -363,7 +364,7 @@
                   <div className="flex-wrapper team-wrapper">
                     <div className="team-title">{`Team ${index + 1}`}</div>
                     <select defaultValue={PLACEHOLDER_VALUE} name={`${team[0].TeamId}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
-                      <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
+                      <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select a team -- </option>
                       {teamsData.map(teamData => {
                         const value = teamData.slug.iv;
                         const title = teamData.name.iv;
@@ -383,7 +384,7 @@
                         <span>{Champion.Name}</span>
                         </span>
                         <select defaultValue={PLACEHOLDER_VALUE} name={`${Champion.Slug}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
-                          <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select an option -- </option>
+                          <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select a champion -- </option>
                           {formattedPlayersData.map(playerSlug => {
                             const value = JSON.stringify({ playerSlug, playerId: ParticipantId, teamId: TeamId, championSlug: Champion.Slug, championId: Champion.Id });
                             return (
