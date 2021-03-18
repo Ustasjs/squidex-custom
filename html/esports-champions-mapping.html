@@ -296,8 +296,6 @@
           if (resultMatchData) {
             const rawParticipants = _.get(resultMatchData, 'Data.participants');
             const championsMapping = _.get(resultMatchData, 'Mappings');
-            console.log('championsMapping', championsMapping);
-            console.log('resultMatchData', resultMatchData);
 
             const formattedChampionsData = championsMapping.map(element => {
               const rawParticipantElement = rawParticipants.find(
@@ -314,7 +312,6 @@
         }, [matchData, savedMatchData]);
         const formattedPlayersData = React.useMemo(function () {
           if (playersData) {
-            console.log('playersData', playersData);
             const playersSlugs = playersData.items.map(championData => _.get(championData, 'data.slug.iv'));
             playersSlugs.sort();
             return playersSlugs;
@@ -388,7 +385,8 @@
               {isMatchDataLoading && <div>loading...</div>}
             </div>
         )}
-
+        console.log('championsDataMap', championsDataMap);
+        console.log('participantsWithTeams', participantsWithTeams);
         return formattedPlayersData && participantsWithTeams && teamsData && (
           <form onSubmit={handleSubmit(onSubmit)}>
             {participantsWithTeams.map((team, index) => (
