@@ -225,13 +225,14 @@
           const formattedFormData = Object.entries(data);
           const teams = formattedFormData.map(element => {
             const teamId = element[0];
-            const teamSlug = element[0];
+            const teamSlug = element[1];
             const teamInfo = teamsData.find(team => team.slug.iv === teamSlug);
             if (teamInfo) {
               return { teamSlug, teamId, teamName: teamInfo.name.iv }
             }
             return null;
           }).filter(value => value);
+          console.log('teams', teams);
           const teamsMap = teams.reduce((acc, element) => {
             if (!acc[element.teamId]) {
               acc[element.teamId] = element;
@@ -241,7 +242,7 @@
           const players = formattedFormData
             .map((element => {
               const championSlug = element[0];
-              const playerSlug = element[0];
+              const playerSlug = element[1];
               const participantData = champion2ParticipantMap[championSlug];
               if (participantData) {
                 return { playerSlug, playerId: participantData.ParticipantId, teamId: participantData.TeamId, championSlug, championId: participantData.Champion.Id }
