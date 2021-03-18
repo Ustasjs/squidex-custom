@@ -354,7 +354,7 @@
             <div className="form-element">
               {initialFormValues.map((team, index) => (
                 <div style={{ marginBottom: index === 0 ? '10px' : undefined }} key={index}>
-                  <div className="team-title">{`Team ${teamsMap[team[0].teamName]}`}</div>
+                  <div className="team-title">{`Team ${teamsMap[team[0].TeamId].teamName}`}</div>
                   {team.map((participant) => (
                     <div className="flex-wrapper" key={participant.playerSlug}>
                       <span className="flex-wrapper">
@@ -400,7 +400,6 @@
                       })}
                     </select>
                   </div>
-                  {errors[team[0].TeamId] && <div className="error form-error">This field is required</div>}
                 </div>
                 {team.map(({ ParticipantId, Champion, TeamId }) => (
                   <div key={ParticipantId}>
