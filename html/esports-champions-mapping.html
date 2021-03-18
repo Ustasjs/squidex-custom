@@ -305,7 +305,7 @@
               )
               return { ...element, TeamId: rawParticipantElement.teamId };
             });
-            const player2ParticipantMap = formattedChampionsData.reduce((acc, elements) => {
+            const player2ParticipantMap = formattedChampionsData.reduce((acc, element) => {
               if (!acc[element.ParticipantId]) {
                 acc[element.ParticipantId] = element;
               }
