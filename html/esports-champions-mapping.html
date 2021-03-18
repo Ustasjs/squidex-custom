@@ -118,7 +118,7 @@
         })
         .then(parsedData => {
           console.log('parsedData', parsedData);
-          const teamsIds = _.get(parsedData, 'data.teams.iv');
+          const teamsIds = _.get(parsedData, 'items[0]data.teams.iv');
           console.log('teamsIds', teamsIds);
           return fetch(`${context.apiUrl}/content/esports-v1/esports-teams-v1/?$filter=id in ${teamsIds}`, {
             headers: {
