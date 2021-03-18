@@ -121,9 +121,9 @@
           const teamsIds = _.get(parsedData, 'items[0]data.teams.iv');
           const teamsIdsQuery = teamsIds && teamsIds.reduce((acc, element) => {
             if (acc === '') {
-              return `${element}`;
+              return `'${element}'`;
             }
-            acc = `${acc}, ${element}`;
+            acc = `${acc}, '${element}'`;
             return acc;
           }, "")
           console.log('teamsIdsQuery', teamsIdsQuery);
