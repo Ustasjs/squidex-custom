@@ -222,15 +222,33 @@
         });
 
         const onSubmit = React.useCallback(data => {
-          const formattedFormData = Object.values(data).map((value) => JSON.parse(value));
-          const teams = formattedFormData.filter(element => element.teamSlug);
+          const formattedFormData = Object.entries(data);
+          const teams = formattedFormData.map(element => {
+            const teamId = element[0];
+            const teamSlug = element[0];
+            const teamInfo = teamData.find(team => team.slug.iv === teamSlug);
+            if (teamInfo) {
+              return { teamSlug, teamId, teamName: teamInfo.name.iv }
+            }
+            return null;
+          }).filter(value => value);
           const teamsMap = teams.reduce((acc, element) => {
             if (!acc[element.teamId]) {
               acc[element.teamId] = element;
             }
             return acc
           }, {})
-          const players = formattedFormData.filter(element => element.playerSlug);
+          const players = formattedFormData
+            .map((element => {
+              const championSlug = element[0];
+              const playerSlug = element[0];
+              const participantData = champion2ParticipantMap[championSlug];
+              if (participantData) {
+                return { playerSlug, playerId: participantData.ParticipantId, teamId: participantData.TeamId, championSlug, championId: participantData.Champion.Id }
+              }
+              return null;
+            }))
+            .filter(value => value);
           const playersSlugs = players.map(element => element.playerSlug);
           const uniquePlayersSlugs = new Set(playersSlugs);
           const teamsSlugs = teams.map(element => element.teamSlug);
@@ -254,7 +272,7 @@
           field.valueChanged(fieldValue);
           setShowSaveTableMessage(true);
           console.log('fieldValue', fieldValue);
-        }, [matchData, savedMatchData, setFormValidationError, setShowSaveTableMessage])
+        }, [matchData, savedMatchData, champion2ParticipantMap, teamData, setFormValidationError, setShowSaveTableMessage])
 
         React.useEffect(function () {
           field.onDisabled(function (disabled) {
@@ -402,7 +420,7 @@
                     <select defaultValue={PLACEHOLDER_VALUE} name={`${team[0].TeamId}`} ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}>
                       <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select a team -- </option>
                       {teamsData.map(teamData => {
-                        const value = JSON.stringify({ teamSlug: teamData.slug.iv, imageSlug: teamData['image-slug'].iv, teamId: team[0].TeamId, teamName: teamData.name.iv });
+                        const value = teamData.slug.iv;
                         const title = teamData.name.iv;
                         return (
                           <option key={value} value={value}>{title}</option>
@@ -420,15 +438,14 @@
                         <span>{Champion.Name}</span>
                         </span>
                         <select
-                          defaultValue={(championsDataMap && championsDataMap[Champion.Slug]) ? JSON.stringify(championsDataMap[Champion.Slug]) : PLACEHOLDER_VALUE}
+                          defaultValue={(championsDataMap && championsDataMap[Champion.Slug]) ? championsDataMap[Champion.Slug].playerSlug : PLACEHOLDER_VALUE}
                           name={`${Champion.Slug}`}
                           ref={register({ required: true, validate: value => value !== PLACEHOLDER_VALUE })}
                         >
                           <option key="placeholder" disabled value={PLACEHOLDER_VALUE}> -- select a player -- </option>
                           {formattedPlayersData.map(playerSlug => {
-                            const value = JSON.stringify({ playerSlug, playerId: ParticipantId, teamId: TeamId, championSlug: Champion.Slug, championId: Champion.Id });
                             return (
-                              <option key={playerSlug} value={value}>{playerSlug}</option>
+                              <option key={playerSlug} value={playerSlug}>{playerSlug}</option>
                             )
                           })}
                         </select>
